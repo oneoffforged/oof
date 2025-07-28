@@ -2,51 +2,82 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>OneOffForged</title>
+  <title>OneOffForged - Custom Forged Wheels</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
+    * {
+      box-sizing: border-box;
+    }
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Segoe UI', sans-serif;
       margin: 0;
-      padding: 0;
-      background: #f8f8f8;
+      background-color: #f4f4f4;
       color: #333;
     }
     header {
-      background: #000;
+      background-color: #000;
       color: #fff;
-      padding: 30px;
+      padding: 20px 40px;
       text-align: center;
     }
-    h1 {
-      margin: 0;
-      font-size: 2.5em;
+    nav {
+      background-color: #111;
+      padding: 10px 0;
+      text-align: center;
     }
-    .subtitle {
-      margin-top: 10px;
+    nav a {
+      color: #ccc;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: bold;
+    }
+    nav a:hover {
+      color: #4da6ff;
+    }
+    .hero {
+      padding: 30px 20px;
+      text-align: center;
+    }
+    .hero h1 {
+      font-size: 2.5em;
+      margin-bottom: 10px;
+    }
+    .hero p {
+      max-width: 700px;
+      margin: 0 auto;
       font-size: 1.1em;
-      max-width: 800px;
-      margin-left: auto;
-      margin-right: auto;
+      line-height: 1.6em;
     }
     .gallery {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      padding: 20px;
+      padding: 30px 15px;
       gap: 20px;
     }
     .gallery img {
       width: 300px;
-      height: auto;
-      box-shadow: 0 0 10px rgba(0,0,0,0.2);
-      border-radius: 6px;
+      max-width: 90%;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.15);
       background: white;
     }
-    footer {
-      background: #222;
-      color: white;
+    .cta {
+      background-color: #fff;
       text-align: center;
-      padding: 20px;
+      padding: 40px 20px;
+      font-size: 1.05em;
+      line-height: 1.6em;
+    }
+    .cta strong {
+      font-size: 1.2em;
+      color: #000;
+    }
+    footer {
+      background: #000;
+      color: #ccc;
+      text-align: center;
+      padding: 25px 20px;
       font-size: 0.95em;
     }
     footer a {
@@ -57,32 +88,52 @@
 </head>
 <body>
 
-<header>
-  <h1>OneOffForged</h1>
-  <p class="subtitle">
-    OneOffForged is a dedicated forged wheel manufacturer specializing in fully custom, made-to-order wheels.
-    We offer one-off and batch production with complete control over design, fitment, and finish — all backed by direct factory support.
-  </p>
-</header>
+  <header>
+    <h1>OneOffForged</h1>
+    <p>Premium Custom-Made Forged Wheels</p>
+  </header>
 
-<section class="gallery">
-  <img src="1.jpeg" alt="Wheel 1">
-<img src="2.jpeg" alt="Wheel 2">
-<img src="3.jpeg" alt="Wheel 3">
-<img src="4.jpeg" alt="Wheel 4">
-<img src="5.jpeg" alt="Wheel 5">
-<img src="6.jpeg" alt="Wheel 6">
-<img src="7.jpeg" alt="Wheel 7">
-<img src="8.jpeg" alt="Wheel 8">
-<img src="9.jpeg" alt="Wheel 9">
-</section>
+  <nav>
+    <a href="#">Home</a>
+    <a href="#contact">Contact</a>
+  </nav>
 
-<footer>
-  <p style="font-weight: bold;">📩 For inquiries or orders, feel free to reach out via email or DM us on Instagram.</p>
-  <p>Email: <a href="mailto:oneoffforged@gmail.com">oneoffforged@gmail.com</a></p>
-  <p>Instagram: <a href="https://instagram.com/oneoffforged" target="_blank">@oneoffforged</a></p>
-  <p>TikTok: <a href="https://tiktok.com/@oneoffforged" target="_blank">@oneoffforged</a></p>
-</footer>
+  <section class="hero">
+    <h1>Built for Style, Strength, and Precision</h1>
+    <p>
+      We specialize in fully custom, made-to-order forged wheels — with complete control over design, fitment, and finish. 
+      Whether you're looking for one-off production or a batch order, we deliver with factory-direct support.
+    </p>
+  </section>
+
+  <section class="gallery">
+    <img src="1.jpeg" alt="Wheel 1">
+    <img src="2.jpeg" alt="Wheel 2">
+    <img src="3.jpeg" alt="Wheel 3">
+    <img src="4.jpeg" alt="Wheel 4">
+    <img src="5.jpeg" alt="Wheel 5">
+    <img src="6.jpeg" alt="Wheel 6">
+    <img src="7.jpeg" alt="Wheel 7">
+    <img src="8.jpeg" alt="Wheel 8">
+    <img src="9.jpeg" alt="Wheel 9">
+  </section>
+
+  <section class="cta" id="contact">
+    <p>
+      🔍 Didn’t see the style you’re looking for?<br>
+      <strong>Feel free to email or DM us with a photo of what you want — we do full custom builds.</strong><br><br>
+      📩 Email us at <a href="mailto:oneoffforged@gmail.com">oneoffforged@gmail.com</a> <br>
+      📸 Instagram DMs also welcome: <a href="https://instagram.com/oneoffforged" target="_blank">@oneoffforged</a>
+    </p>
+  </section>
+
+  <footer>
+    <p>© 2025 OneOffForged. All rights reserved.</p>
+    <p>Email: <a href="mailto:oneoffforged@gmail.com">oneoffforged@gmail.com</a> | 
+       IG: <a href="https://instagram.com/oneoffforged" target="_blank">@oneoffforged</a> | 
+       TikTok: <a href="https://tiktok.com/@oneoffforged" target="_blank">@oneoffforged</a>
+    </p>
+  </footer>
 
 </body>
 </html>
