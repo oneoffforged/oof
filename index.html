@@ -32,25 +32,70 @@
     nav a:hover {
       text-decoration: underline;
     }
-    .slider {
-      display: flex;
-      overflow-x: auto;
-      scroll-behavior: smooth;
-      gap: 10px;
-      padding: 20px;
+
+    .slider-container {
+      position: relative;
+      overflow: hidden;
       background: #111;
+      padding: 20px 0;
     }
-    .slider img {
+
+    .slider-track {
+      display: flex;
+      width: max-content;
+      animation: scroll 40s linear infinite;
+      gap: 20px;
+      padding-left: 100%;
+    }
+
+    .slider-track img {
       height: 300px;
       border-radius: 8px;
       box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      transition: transform 0.3s ease;
     }
+
+    .slider-container:hover .slider-track {
+      animation-play-state: paused;
+    }
+
+    @keyframes scroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+    }
+
+    .slider-button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      color: white;
+      font-size: 2em;
+      padding: 10px;
+      cursor: pointer;
+      z-index: 10;
+    }
+
+    .slider-button:hover {
+      background: rgba(255, 255, 255, 0.4);
+    }
+
+    .slider-button.left {
+      left: 10px;
+    }
+
+    .slider-button.right {
+      right: 10px;
+    }
+
     .tagline {
       font-size: 1.2em;
       text-align: center;
       margin: 20px;
       color: #444;
     }
+
     .why-us {
       max-width: 800px;
       margin: 40px auto;
@@ -58,24 +103,29 @@
       background: white;
       border-radius: 8px;
     }
+
     .why-us h2 {
       text-align: center;
       margin-bottom: 20px;
     }
+
     .why-us ul {
       list-style: none;
       padding: 0;
     }
+
     .why-us li {
       margin: 10px 0;
       font-size: 1.1em;
     }
+
     footer {
       background: #000;
       color: white;
       text-align: center;
       padding: 20px;
     }
+
     footer a {
       color: #4da6ff;
       text-decoration: none;
@@ -98,10 +148,21 @@
   <a href="contact.html"><i class="fas fa-envelope"></i> Contact</a>
 </nav>
 
-<section class="slider">
-  <img src="1.jpeg" alt="Wheel 1">
-  <img src="2.jpeg" alt="Wheel 2">
-  <img src="3.jpeg" alt="Wheel 3">
+<section class="slider-container" id="slider">
+  <button class="slider-button left" onclick="scrollSlider(-1)"><i class="fas fa-chevron-left"></i></button>
+  <div class="slider-track" id="sliderTrack">
+    <img src="1.jpeg" alt="Wheel 1">
+    <img src="2.jpeg" alt="Wheel 2">
+    <img src="3.jpeg" alt="Wheel 3">
+    <img src="4.jpeg" alt="Wheel 4">
+    <img src="5.jpeg" alt="Wheel 5">
+    <img src="6.jpeg" alt="Wheel 6">
+    <img src="7.jpeg" alt="Wheel 7">
+    <img src="8.jpeg" alt="Wheel 8">
+    <img src="9.jpeg" alt="Wheel 9">
+    <img src="10.jpeg" alt="Wheel 10">
+  </div>
+  <button class="slider-button right" onclick="scrollSlider(1)"><i class="fas fa-chevron-right"></i></button>
 </section>
 
 <section class="why-us">
@@ -120,6 +181,13 @@
   <p>Instagram: <a href="https://instagram.com/oneoffforged">@oneoffforged</a></p>
   <p>TikTok: <a href="https://tiktok.com/@oneoffforged">@oneoffforged</a></p>
 </footer>
+
+<script>
+  function scrollSlider(direction) {
+    const track = document.getElementById('sliderTrack');
+    track.scrollBy({ left: direction * 320, behavior: 'smooth' });
+  }
+</script>
 
 </body>
 </html>
