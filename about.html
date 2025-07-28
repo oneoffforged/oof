@@ -56,11 +56,18 @@
     }
 
     .gallery img {
-      width: 300px;
+      max-width: 100%;
       height: auto;
       border-radius: 8px;
       box-shadow: 0 0 8px rgba(0,0,0,0.1);
       background: #fff;
+      object-fit: contain;
+    }
+
+    .gallery-item {
+      max-width: 320px;
+      flex-grow: 1;
+      flex-shrink: 1;
     }
 
     footer {
@@ -96,10 +103,10 @@
   <section class="factory-gallery">
     <h2>Factory Overview</h2>
     <div class="gallery">
-      <img src="factory1.jpg" alt="Factory View 1">
-      <img src="factory2.jpg" alt="Factory View 2">
-      <img src="factory3.jpg" alt="Factory View 3">
-      <img src="factory4.jpg" alt="Factory View 4">
+      <div class="gallery-item"><img src="factory1.jpg" alt="Factory View 1"></div>
+      <div class="gallery-item"><img src="factory2.jpg" alt="Factory View 2"></div>
+      <div class="gallery-item"><img src="factory3.jpg" alt="Factory View 3"></div>
+      <div class="gallery-item"><img src="factory4.jpg" alt="Factory View 4"></div>
     </div>
   </section>
 </main>
