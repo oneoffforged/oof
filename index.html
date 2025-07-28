@@ -1,125 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>OneOffForged — Custom Forged Wheels</title>
+  <meta charset="UTF-8">
+  <title>OneOffForged</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Segoe UI', sans-serif;
       margin: 0;
       padding: 0;
-      background: linear-gradient(to bottom, #111, #1c1c1c);
-      color: white;
+      background: #f0f0f0;
+      color: #333;
+    }
+    header {
+      background: #000;
+      color: #fff;
+      padding: 20px 10px;
       text-align: center;
     }
-
-    header {
-      padding: 50px 20px;
+    nav {
+      background: #222;
+      padding: 10px;
+      text-align: center;
     }
-
-    h1 {
-      font-size: 3em;
-      margin-bottom: 10px;
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: bold;
     }
-
+    nav a:hover {
+      text-decoration: underline;
+    }
+    .slider {
+      display: flex;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      gap: 10px;
+      padding: 20px;
+      background: #111;
+    }
+    .slider img {
+      height: 300px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
     .tagline {
       font-size: 1.2em;
-      color: #ccc;
-      margin-bottom: 40px;
-      max-width: 700px;
-      margin-left: auto;
-      margin-right: auto;
+      text-align: center;
+      margin: 20px;
+      color: #444;
     }
-
-    .buttons {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      flex-wrap: wrap;
-      margin-bottom: 50px;
-    }
-
-    .buttons a {
-      background: white;
-      color: black;
-      padding: 15px 30px;
-      text-decoration: none;
-      border-radius: 6px;
-      font-weight: bold;
-      transition: 0.3s;
-    }
-
-    .buttons a:hover {
-      background: #4da6ff;
-      color: white;
-    }
-
     .why-us {
-      background: #f8f8f8;
-      color: #222;
-      padding: 60px 20px;
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 8px;
     }
-
     .why-us h2 {
-      font-size: 2em;
-      margin-bottom: 30px;
+      text-align: center;
+      margin-bottom: 20px;
     }
-
     .why-us ul {
       list-style: none;
       padding: 0;
-      font-size: 1.1em;
-      line-height: 2;
-      max-width: 700px;
-      margin: auto;
     }
-
+    .why-us li {
+      margin: 10px 0;
+      font-size: 1.1em;
+    }
     footer {
       background: #000;
       color: white;
       text-align: center;
-      padding: 30px 20px;
-      font-size: 0.95em;
+      padding: 20px;
     }
-
     footer a {
       color: #4da6ff;
       text-decoration: none;
-    }
-
-    footer a:hover {
-      text-decoration: underline;
     }
   </style>
 </head>
 <body>
 
 <header>
-  <h1>Welcome to OneOffForged</h1>
+  <h1>OneOffForged</h1>
   <p class="tagline">Factory-direct custom forged wheels — built around your style, your fitment, your vision.</p>
-
-  <div class="buttons">
-    <a href="gallery.html">📷 View Our Wheel Gallery</a>
-    <a href="feedback.html">💬 Customer Feedback</a>
-    <a href="contact.html">📩 Contact Us</a>
-  </div>
 </header>
+
+<nav>
+  <a href="index.html"><i class="fas fa-home"></i> Home</a>
+  <a href="about.html"><i class="fas fa-industry"></i> About</a>
+  <a href="faq.html"><i class="fas fa-question-circle"></i> FAQ</a>
+  <a href="gallery.html"><i class="fas fa-images"></i> Gallery</a>
+  <a href="feedback.html"><i class="fas fa-comments"></i> Feedback</a>
+</nav>
+
+<section class="slider">
+  <img src="1.jpeg" alt="Wheel 1">
+  <img src="2.jpeg" alt="Wheel 2">
+  <img src="3.jpeg" alt="Wheel 3">
+</section>
 
 <section class="why-us">
   <h2>Why Choose OneOffForged?</h2>
   <ul>
-    <li>🎯 Tailored Fitment — every set is made to match your vehicle perfectly</li>
-    <li>🏭 Direct from Manufacturer — no resellers, no markup</li>
-    <li>🎨 Fully Customizable — design, finish, and size all built to spec</li>
-    <li>💬 Real Support — talk to real wheel experts, not bots</li>
+    <li>🎯 Tailored fitment — wheels built to your specs</li>
+    <li>🏭 Factory-direct service — skip the middleman</li>
+    <li>🎨 Custom finishes — color, design, and more</li>
+    <li>🌍 Worldwide shipping & support</li>
   </ul>
 </section>
 
 <footer>
-  <p style="font-weight: bold;">📩 For inquiries or orders, feel free to reach out via email or DM us on Instagram.</p>
+  <p>📩 For inquiries, feel free to email or DM us:</p>
   <p>Email: <a href="mailto:oneoffforged@gmail.com">oneoffforged@gmail.com</a></p>
-  <p>Instagram: <a href="https://instagram.com/oneoffforged" target="_blank">@oneoffforged</a></p>
-  <p>TikTok: <a href="https://tiktok.com/@oneoffforged" target="_blank">@oneoffforged</a></p>
+  <p>Instagram: <a href="https://instagram.com/oneoffforged">@oneoffforged</a></p>
+  <p>TikTok: <a href="https://tiktok.com/@oneoffforged">@oneoffforged</a></p>
 </footer>
 
 </body>
