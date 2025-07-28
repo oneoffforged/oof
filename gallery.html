@@ -3,18 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <title>Gallery - OneOffForged</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f4f4f4;
       margin: 0;
-      padding: 0;
+      background: #f8f8f8;
+      color: #333;
     }
 
     header {
       background: #000;
-      color: #fff;
+      color: white;
       padding: 30px;
       text-align: center;
     }
@@ -36,10 +35,6 @@
       text-decoration: underline;
     }
 
-    h1 {
-      margin: 0;
-    }
-
     .gallery {
       display: flex;
       flex-wrap: wrap;
@@ -48,42 +43,57 @@
       padding: 30px;
     }
 
-    .gallery img {
+    .gallery-item img {
       max-width: 100%;
-      height: auto;
-      width: 300px;
+      max-height: 100%;
+      display: block;
       border-radius: 8px;
-      box-shadow: 0 0 8px rgba(0,0,0,0.1);
-      background: #fff;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .gallery-item {
+      flex: 0 1 auto;
+      max-width: 400px;
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <h1>Gallery</h1>
-    <p>Explore our custom forged wheel collection</p>
-  </header>
+<header>
+  <h1>Wheel Gallery</h1>
+  <p>Explore our latest forged wheel designs</p>
+</header>
 
-  <!-- ✅ 顶部导航栏 -->
-  <nav>
-    <a href="index.html"><i class="fas fa-home"></i> Home</a>
-    <a href="about.html"><i class="fas fa-industry"></i> About</a>
-    <a href="faq.html"><i class="fas fa-question-circle"></i> FAQ</a>
-    <a href="gallery.html"><i class="fas fa-images"></i> Gallery</a>
-    <a href="feedback.html"><i class="fas fa-comments"></i> Feedback</a>
-    <a href="contact.html"><i class="fas fa-envelope"></i> Contact</a>
-  </nav>
+<nav>
+  <a href="index.html">Home</a>
+  <a href="about.html">About</a>
+  <a href="faq.html">FAQ</a>
+  <a href="gallery.html">Gallery</a>
+  <a href="feedback.html">Feedback</a>
+  <a href="contact.html">Contact</a>
+</nav>
 
-  <section class="gallery">
-    <img src="1.jpeg" alt="Wheel 1">
-    <img src="2.jpeg" alt="Wheel 2">
-    <img src="3.jpeg" alt="Wheel 3">
-    <img src="4.jpeg" alt="Wheel 4">
-    <img src="5.jpeg" alt="Wheel 5">
-    <img src="6.jpeg" alt="Wheel 6">
-    <!-- 如需添加更多图片，请按格式添加 -->
-  </section>
+<section class="gallery">
+  <div class="gallery-item"><img src="1.jpeg" alt="Wheel 1"></div>
+  <div class="gallery-item"><img src="2.jpeg" alt="Wheel 2"></div>
+  <div class="gallery-item"><img src="3.jpeg" alt="Wheel 3"></div>
+  <div class="gallery-item"><img src="4.jpeg" alt="Wheel 4"></div>
+  <div class="gallery-item"><img src="5.jpeg" alt="Wheel 5"></div>
+  <div class="gallery-item"><img src="6.jpeg" alt="Wheel 6"></div>
+  <div class="gallery-item"><img src="7.jpeg" alt="Wheel 7"></div>
+  <div class="gallery-item"><img src="8.jpeg" alt="Wheel 8"></div>
+  <div class="gallery-item"><img src="9.jpeg" alt="Wheel 9"></div>
+  <div class="gallery-item"><img src="10.jpeg" alt="Wheel 10"></div>
+  <div class="gallery-item"><img src="11.jpeg" alt="Wheel 11"></div>
+  <div class="gallery-item"><img src="12.jpeg" alt="Wheel 12"></div>
+  <div class="gallery-item"><img src="13.jpeg" alt="Wheel 13"></div>
+  <div class="gallery-item"><img src="14.jpeg" alt="Wheel 14"></div>
+  <div class="gallery-item"><img src="15.jpeg" alt="Wheel 15"></div>
+  <div class="gallery-item"><img src="factory1.jpg" alt="Factory 1"></div>
+  <div class="gallery-item"><img src="factory2.jpg" alt="Factory 2"></div>
+  <div class="gallery-item"><img src="factory3.jpg" alt="Factory 3"></div>
+  <div class="gallery-item"><img src="factory4.jpg" alt="Factory 4"></div>
+</section>
 
 </body>
 </html>
