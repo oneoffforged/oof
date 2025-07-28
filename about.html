@@ -3,54 +3,78 @@
 <head>
   <meta charset="UTF-8">
   <title>About Us - OneOffForged</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
+      font-family: Arial, sans-serif;
       margin: 0;
-      padding: 0;
-      background: #f7f7f7;
+      background-color: #f4f4f4;
       color: #333;
     }
+
     header {
       background: #000;
       color: #fff;
-      padding: 20px;
+      padding: 30px;
       text-align: center;
     }
-    nav {
-      background: #222;
-      text-align: center;
-      padding: 10px;
-    }
-    nav a {
-      color: #fff;
-      text-decoration: none;
-      margin: 0 15px;
-      font-weight: bold;
-    }
-    nav a:hover {
-      text-decoration: underline;
-    }
-    .content {
-      max-width: 800px;
-      margin: 40px auto;
-      padding: 20px;
+
+    main {
+      padding: 40px 20px;
+      max-width: 1000px;
+      margin: auto;
       background: #fff;
-      border-radius: 8px;
     }
-    .content h2 {
+
+    h1 {
+      font-size: 2.2em;
+      margin-bottom: 20px;
       text-align: center;
     }
+
+    p {
+      font-size: 1.1em;
+      line-height: 1.7em;
+      margin-bottom: 30px;
+      text-align: justify;
+    }
+
+    .factory-gallery {
+      padding-top: 20px;
+      text-align: center;
+    }
+
+    .factory-gallery h2 {
+      font-size: 1.6em;
+      margin-bottom: 15px;
+    }
+
+    .gallery {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    .gallery img {
+      width: 300px;
+      height: auto;
+      border-radius: 8px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+      background: #fff;
+    }
+
     footer {
-      background: #000;
+      background: #222;
       color: white;
       text-align: center;
       padding: 20px;
+      font-size: 0.95em;
       margin-top: 40px;
     }
-    footer a {
+
+    a {
       color: #4da6ff;
+      text-decoration: none;
     }
   </style>
 </head>
@@ -60,32 +84,28 @@
   <h1>About OneOffForged</h1>
 </header>
 
-<nav>
-  <a href="index.html"><i class="fas fa-home"></i> Home</a>
-  <a href="about.html"><i class="fas fa-industry"></i> About</a>
-  <a href="faq.html"><i class="fas fa-question-circle"></i> FAQ</a>
-  <a href="gallery.html"><i class="fas fa-images"></i> Gallery</a>
-  <a href="feedback.html"><i class="fas fa-comments"></i> Feedback</a>
-  <a href="contact.html"><i class="fas fa-envelope"></i> Contact</a>
-</nav>
+<main>
+  <p>
+    OneOffForged is a dedicated forged wheel manufacturer based in China. With a full range of advanced CNC machines and decades of experience, we deliver fully customizable forged wheels tailored to each client’s needs. Whether it’s an aggressive street setup or a show-ready design, we support all custom specs, finishes, and styles.
+  </p>
 
-<div class="content">
-  <h2>Passion. Precision. Performance.</h2>
   <p>
-    OneOffForged is not just another wheel brand — we are the factory. With over a decade of experience in manufacturing forged wheels,
-    we offer full control from concept to completion. Every wheel is tailored to your vehicle and your vision.
+    Backed by direct factory support and no middlemen, we ensure consistent quality, fast production timelines, and personalized service. From engineering to packaging, every set is made with precision and passion.
   </p>
-  <p>
-    Our dedicated team works closely with you to bring your ideas to life. Whether you’re building a show car or chasing lap times,
-    our wheels are made to meet the highest standards of quality, fitment, and style.
-  </p>
-  <p>
-    From initial sketch to final inspection, we deliver one-off forged wheels that make a statement — and stand the test of time.
-  </p>
-</div>
+
+  <section class="factory-gallery">
+    <h2>Factory Overview</h2>
+    <div class="gallery">
+      <img src="factory1.jpg" alt="Factory View 1">
+      <img src="factory2.jpg" alt="Factory View 2">
+      <img src="factory3.jpg" alt="Factory View 3">
+      <img src="factory4.jpg" alt="Factory View 4">
+    </div>
+  </section>
+</main>
 
 <footer>
-  <p>© 2025 OneOffForged | Built with pride and precision.</p>
+  <p>📩 For inquiries, email us at <a href="mailto:oneoffforged@gmail.com">oneoffforged@gmail.com</a> or message us on <a href="https://instagram.com/oneoffforged" target="_blank">Instagram</a>.</p>
 </footer>
 
 </body>
