@@ -4,40 +4,45 @@
   <meta charset="UTF-8">
   <title>Gallery - OneOffForged</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      background: #f8f8f8;
-      color: #333;
-    }
-    header {
-      background: #000;
-      color: white;
-      padding: 30px;
-      text-align: center;
-    }
-    h1 {
-      margin: 0;
-    }
-    .gallery {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
-      padding: 30px;
-    }
-    .gallery-item {
-      width: 300px;
-      background: white;
-      border-radius: 6px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      overflow: hidden;
-    }
-    .gallery-item img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: #f8f8f8;
+  color: #333;
+}
+header {
+  background: #000;
+  color: white;
+  padding: 30px;
+  text-align: center;
+}
+h1 {
+  margin: 0;
+}
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  padding: 30px;
+}
+.gallery-item {
+  background: white;
+  border-radius: 6px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+.gallery-item img {
+  max-width: 100%;
+  max-height: 350px;
+  height: auto;
+  width: auto;
+  display: block;
+}
   </style>
 </head>
 <body>
