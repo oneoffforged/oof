@@ -3,23 +3,55 @@
 <head>
   <meta charset="UTF-8">
   <title>Customer Feedback - OneOffForged</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     body { font-family: Arial, sans-serif; background: #f4f4f4; margin: 0; padding: 0; }
-    header { background: #000; color: #fff; padding: 30px; text-align: center; }
+    
+    header {
+      background: #000;
+      color: #fff;
+      padding: 30px;
+      text-align: center;
+    }
+
+    nav {
+      background: #222;
+      padding: 10px;
+      text-align: center;
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
     h1 { margin: 0; }
+
     .feedback-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       gap: 20px;
       padding: 30px;
     }
+
     .feedback-item {
       background: white;
       padding: 20px;
       border-radius: 8px;
       box-shadow: 0 0 8px rgba(0,0,0,0.1);
     }
-    .stars { color: #f5b301; font-size: 1.2em; margin-top: 10px; }
+
+    .stars {
+      color: #f5b301;
+      font-size: 1.2em;
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
@@ -27,6 +59,17 @@
     <h1>What Our Customers Say</h1>
     <p>Real reviews from satisfied enthusiasts and builders</p>
   </header>
+
+  <!-- ✅ 添加的导航栏 -->
+  <nav>
+    <a href="index.html"><i class="fas fa-home"></i> Home</a>
+    <a href="about.html"><i class="fas fa-industry"></i> About</a>
+    <a href="faq.html"><i class="fas fa-question-circle"></i> FAQ</a>
+    <a href="gallery.html"><i class="fas fa-images"></i> Gallery</a>
+    <a href="feedback.html"><i class="fas fa-comments"></i> Feedback</a>
+    <a href="contact.html"><i class="fas fa-envelope"></i> Contact</a>
+  </nav>
+
   <section class="feedback-grid">
     <div class="feedback-item">
       <strong>Alex R.</strong>
