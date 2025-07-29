@@ -12,56 +12,59 @@
       background: #f0f0f0;
       color: #333;
     }
+
     header {
       background: #000;
       color: #fff;
       padding: 20px 10px;
       text-align: center;
     }
+
     nav {
       background: #222;
       padding: 10px;
       text-align: center;
     }
+
     nav a {
       color: #fff;
       text-decoration: none;
       margin: 0 15px;
       font-weight: bold;
     }
+
     nav a:hover {
       text-decoration: underline;
     }
 
     .slider-container {
-      position: relative;
       overflow: hidden;
       background: #111;
       padding: 20px 0;
+      position: relative;
     }
 
     .slider-track {
       display: flex;
-      width: max-content;
+      width: calc(200% + 20px);
       animation: scroll 40s linear infinite;
-      gap: 20px;
-      padding-left: 100%;
     }
 
     .slider-track img {
       height: 300px;
+      margin-right: 20px;
       border-radius: 8px;
       box-shadow: 0 0 10px rgba(0,0,0,0.5);
-      transition: transform 0.3s ease;
-    }
-
-    .slider-container:hover .slider-track {
-      animation-play-state: paused;
+      flex-shrink: 0;
     }
 
     @keyframes scroll {
       0% { transform: translateX(0); }
-      100% { transform: translateX(-100%); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .slider-container:hover .slider-track {
+      animation-play-state: paused;
     }
 
     .slider-button {
@@ -151,6 +154,18 @@
 <section class="slider-container" id="slider">
   <button class="slider-button left" onclick="scrollSlider(-1)"><i class="fas fa-chevron-left"></i></button>
   <div class="slider-track" id="sliderTrack">
+    <img src="1.jpeg" alt="Wheel 1">
+    <img src="2.jpeg" alt="Wheel 2">
+    <img src="3.jpeg" alt="Wheel 3">
+    <img src="4.jpeg" alt="Wheel 4">
+    <img src="5.jpeg" alt="Wheel 5">
+    <img src="6.jpeg" alt="Wheel 6">
+    <img src="7.jpeg" alt="Wheel 7">
+    <img src="8.jpeg" alt="Wheel 8">
+    <img src="9.jpeg" alt="Wheel 9">
+    <img src="10.jpeg" alt="Wheel 10">
+
+    <!-- duplicated for seamless loop -->
     <img src="1.jpeg" alt="Wheel 1">
     <img src="2.jpeg" alt="Wheel 2">
     <img src="3.jpeg" alt="Wheel 3">
