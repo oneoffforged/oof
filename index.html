@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>OneOffForged</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- 手机端适配核心 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     body {
@@ -133,6 +134,67 @@
       color: #4da6ff;
       text-decoration: none;
     }
+
+    /* Responsive styles for mobile devices */
+    @media (max-width: 768px) {
+      header {
+        padding: 15px 5px;
+      }
+
+      .tagline {
+        font-size: 1em;
+        margin: 10px;
+      }
+
+      nav {
+        padding: 10px 5px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      nav a {
+        display: inline-block;
+        margin: 5px 8px;
+        font-size: 0.9em;
+      }
+
+      .slider-track {
+        animation: none;
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        width: auto;
+      }
+
+      .slider-track img {
+        height: auto;
+        width: 100%;
+        max-width: 300px;
+        margin: 10px auto;
+      }
+
+      .slider-button {
+        display: none;
+      }
+
+      .why-us {
+        margin: 20px 10px;
+        padding: 15px;
+      }
+
+      .why-us h2 {
+        font-size: 1.3em;
+      }
+
+      .why-us li {
+        font-size: 1em;
+      }
+
+      footer {
+        font-size: 0.9em;
+        padding: 15px 10px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -164,7 +226,6 @@
     <img src="8.jpeg" alt="Wheel 8">
     <img src="9.jpeg" alt="Wheel 9">
     <img src="10.jpeg" alt="Wheel 10">
-
     <!-- duplicated for seamless loop -->
     <img src="1.jpeg" alt="Wheel 1">
     <img src="2.jpeg" alt="Wheel 2">
