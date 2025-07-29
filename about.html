@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>About Us - OneOffForged</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- 移动端适配核心 -->
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -78,6 +79,51 @@
       object-fit: cover;
       border-radius: 8px;
       box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    }
+
+    /* 📱 响应式优化 */
+    @media (max-width: 768px) {
+      header {
+        padding: 20px 10px;
+      }
+
+      header h1 {
+        font-size: 1.5em;
+      }
+
+      nav {
+        padding: 10px 5px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      nav a {
+        margin: 5px 10px;
+        font-size: 0.9em;
+      }
+
+      main {
+        padding: 20px 15px;
+      }
+
+      p {
+        font-size: 1em;
+        text-align: left;
+      }
+
+      .factory-gallery h2 {
+        font-size: 1.3em;
+      }
+
+      .gallery {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 15px;
+      }
+
+      .gallery-item img {
+        height: auto;
+      }
     }
   </style>
 </head>
