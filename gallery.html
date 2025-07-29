@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Gallery - OneOffForged</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- 响应式核心 -->
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -55,6 +56,43 @@
 
     .gallery img:hover {
       transform: scale(1.03);
+    }
+
+    /* 响应式优化 */
+    @media (max-width: 768px) {
+      header {
+        padding: 20px 10px;
+      }
+
+      header h1 {
+        font-size: 1.5em;
+      }
+
+      header p {
+        font-size: 1em;
+      }
+
+      nav {
+        padding: 10px 5px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      nav a {
+        margin: 5px 10px;
+        font-size: 0.9em;
+      }
+
+      .gallery {
+        padding: 20px 10px;
+        gap: 15px;
+      }
+
+      .gallery img {
+        height: auto;
+        max-width: 100%;
+      }
     }
   </style>
 </head>
