@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Contact - OneOffForged</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- 移动端适配核心 -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -43,7 +46,7 @@
       background: white;
       padding: 30px;
       border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
 
     h2 {
@@ -76,6 +79,57 @@
       color: #555;
     }
 
+    form {
+      margin-top: 40px;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-family: inherit;
+    }
+
+    input[type="file"] {
+      padding: 0;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 12px 20px;
+      background-color: #000;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background-color: #444;
+    }
+
+    .success-message {
+      display: none;
+      background-color: #d4edda;
+      color: #155724;
+      padding: 15px;
+      margin-top: 20px;
+      border: 1px solid #c3e6cb;
+      border-radius: 5px;
+      text-align: center;
+    }
+
     footer {
       background: #000;
       color: white;
@@ -84,7 +138,6 @@
       margin-top: 40px;
     }
 
-    /* 📱 响应式优化 */
     @media (max-width: 768px) {
       header {
         padding: 20px 10px;
@@ -115,19 +168,6 @@
         padding: 20px 15px;
       }
 
-      h2 {
-        font-size: 1.3em;
-      }
-
-      p {
-        font-size: 1em;
-        text-align: left;
-      }
-
-      .contact-info a {
-        font-size: 1em;
-      }
-
       footer {
         font-size: 0.9em;
         padding: 15px 10px;
@@ -136,40 +176,121 @@
   </style>
 </head>
 <body>
+  <header>
+    <h1>Contact Us</h1>
+    <p>Get in touch with OneOffForged</p>
+  </header>
 
-<header>
-  <h1>Contact Us</h1>
-  <p>Get in touch with OneOffForged</p>
-</header>
+  <nav>
+    <a href="index.html"><i class="fas fa-home"></i> Home</a>
+    <a href="about.html"><i class="fas fa-industry"></i> About</a>
+    <a href="faq.html"><i class="fas fa-question-circle"></i> FAQ</a>
+    <a href="gallery.html"><i class="fas fa-images"></i> Gallery</a>
+    <a href="feedback.html"><i class="fas fa-comments"></i> Feedback</a>
+    <a href="contact.html"><i class="fas fa-envelope"></i> Contact</a>
+  </nav>
 
-<nav>
-  <a href="index.html"><i class="fas fa-home"></i> Home</a>
-  <a href="about.html"><i class="fas fa-industry"></i> About</a>
-  <a href="faq.html"><i class="fas fa-question-circle"></i> FAQ</a>
-  <a href="gallery.html"><i class="fas fa-images"></i> Gallery</a>
-  <a href="feedback.html"><i class="fas fa-comments"></i> Feedback</a>
-  <a href="contact.html"><i class="fas fa-envelope"></i> Contact</a>
-</nav>
+  <main>
+    <h2>We'd love to hear from you!</h2>
+    <p>
+      Whether you're looking for custom forged wheels, partnership opportunities,
+      or just have questions — feel free to reach out!
+    </p>
 
-<main>
-  <h2>We'd love to hear from you!</h2>
-  <p>
-    Whether you're looking for custom forged wheels, partnership opportunities, or just have questions — feel free to reach out!
-  </p>
-  <p>
-    If you don’t see what you’re looking for in our gallery, feel free to contact us with a reference picture or your desired specs — we offer fully custom work.
-  </p>
+    <div class="contact-info">
+      <a href="mailto:oneoffforged@gmail.com"><i class="fas fa-envelope"></i> oneoffforged@gmail.com</a>
+      <a href="https://instagram.com/oneoffforged" target="_blank"><i class="fab fa-instagram"></i> @oneoffforged</a>
+      <a href="https://tiktok.com/@oneoffforged" target="_blank"><i class="fab fa-tiktok"></i> @oneoffforged</a>
+    </div>
 
-  <div class="contact-info">
-    <a href="mailto:oneoffforged@gmail.com"><i class="fas fa-envelope"></i> oneoffforged@gmail.com</a>
-    <a href="https://instagram.com/oneoffforged" target="_blank"><i class="fab fa-instagram"></i> @oneoffforged</a>
-    <a href="https://tiktok.com/@oneoffforged" target="_blank"><i class="fab fa-tiktok"></i> @oneoffforged</a>
-  </div>
-</main>
+    <form
+      id="quote-form"
+      action="https://formspree.io/f/mwkgyknz"
+      method="POST"
+      enctype="multipart/form-data"
+    >
+      <h2>Get a Quote</h2>
 
-<footer>
-  <p>&copy; 2025 OneOffForged. All rights reserved.</p>
-</footer>
+      <label for="name">Full Name*</label>
+      <input type="text" name="name" id="name" required />
 
+      <label for="email">Email*</label>
+      <input type="email" name="email" id="email" required />
+
+      <label for="make">Vehicle Make*</label>
+      <input type="text" name="make" id="make" required />
+
+      <label for="year">Vehicle Year*</label>
+      <input type="text" name="year" id="year" required />
+
+      <label for="model">Vehicle Model*</label>
+      <input type="text" name="model" id="model" required />
+
+      <label for="size">Wheel Size (inches)*</label>
+      <input type="text" name="size" id="size" required />
+
+      <label for="j">J Width (optional)</label>
+      <input type="text" name="j" id="j" />
+
+      <label for="et">Offset (ET) (optional)</label>
+      <input type="text" name="et" id="et" />
+
+      <label for="bolt">Bolt Pattern (optional)</label>
+      <input type="text" name="bolt" id="bolt" />
+
+      <label for="centerbore">Center Bore (optional)</label>
+      <input type="text" name="centerbore" id="centerbore" />
+
+      <label for="color">Preferred Color (optional)</label>
+      <input type="text" name="color" id="color" />
+
+      <label for="photo">Upload reference photo (optional)</label>
+      <input type="file" name="photo" id="photo" accept="image/*" />
+
+      <label for="notes">Notes (optional)</label>
+      <textarea name="notes" id="notes" rows="4"></textarea>
+
+      <button type="submit">Submit Quote Request</button>
+
+      <div class="success-message" id="successMsg">
+        ✅ Thank you! Your request has been sent.
+      </div>
+    </form>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 OneOffForged. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const form = document.getElementById("quote-form");
+    const successMsg = document.getElementById("successMsg");
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const data = new FormData(form);
+      fetch(form.action, {
+        method: form.method,
+        body: data,
+        headers: {
+          Accept: "application/json",
+        },
+      })
+        .then((response) => {
+          if (response.ok) {
+            form.reset();
+            successMsg.style.display = "block";
+            setTimeout(() => {
+              successMsg.style.display = "none";
+            }, 3000);
+          } else {
+            alert("Submission failed. Please try again.");
+          }
+        })
+        .catch(() => {
+          alert("Submission error. Please check your internet connection.");
+        });
+    });
+  </script>
 </body>
 </html>
