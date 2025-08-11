@@ -47,7 +47,7 @@
 
     .slider-track {
       display: flex;
-      width: calc(200% + 20px);
+      width: max-content;
       animation: scroll 40s linear infinite;
     }
 
@@ -215,29 +215,7 @@
 
 <section class="slider-container" id="slider">
   <button class="slider-button left" onclick="scrollSlider(-1)"><i class="fas fa-chevron-left"></i></button>
-  <div class="slider-track" id="sliderTrack">
-    <img src="1.jpeg" alt="Wheel 1">
-    <img src="2.jpeg" alt="Wheel 2">
-    <img src="3.jpeg" alt="Wheel 3">
-    <img src="4.jpeg" alt="Wheel 4">
-    <img src="5.jpeg" alt="Wheel 5">
-    <img src="6.jpeg" alt="Wheel 6">
-    <img src="7.jpeg" alt="Wheel 7">
-    <img src="8.jpeg" alt="Wheel 8">
-    <img src="9.jpeg" alt="Wheel 9">
-    <img src="10.jpeg" alt="Wheel 10">
-    <!-- duplicated for seamless loop -->
-    <img src="1.jpeg" alt="Wheel 1">
-    <img src="2.jpeg" alt="Wheel 2">
-    <img src="3.jpeg" alt="Wheel 3">
-    <img src="4.jpeg" alt="Wheel 4">
-    <img src="5.jpeg" alt="Wheel 5">
-    <img src="6.jpeg" alt="Wheel 6">
-    <img src="7.jpeg" alt="Wheel 7">
-    <img src="8.jpeg" alt="Wheel 8">
-    <img src="9.jpeg" alt="Wheel 9">
-    <img src="10.jpeg" alt="Wheel 10">
-  </div>
+  <div class="slider-track" id="sliderTrack"></div>
   <button class="slider-button right" onclick="scrollSlider(1)"><i class="fas fa-chevron-right"></i></button>
 </section>
 
@@ -263,6 +241,55 @@
     const track = document.getElementById('sliderTrack');
     track.scrollBy({ left: direction * 320, behavior: 'smooth' });
   }
+
+  // 自动加载 /images 下的轮播图
+  (function(){
+    const exts = ['jpeg','jpg','JPEG','JPG'];
+    const howMany = 10; // 轮播里展示多少张
+    const cacheBust = `?v=${Date.now()}`;
+
+    const parts = location.pathname.split('/').filter(Boolean);
+    const candidates = [
+      'images/',
+      '/images/',
+      '/' + (parts[0] || '') + '/images/',
+      location.origin + '/images/',
+      location.origin + '/' + (parts[0] || '') + '/images/'
+    ];
+
+    function probePrefix(prefix, i=1, ei=0){
+      return new Promise((res, rej)=>{
+        if (ei >= exts.length) return rej();
+        const img = new Image();
+        img.onload = ()=>res(prefix);
+        img.onerror= ()=>res(probePrefix(prefix, i, ei+1));
+        img.src = `${prefix}${i}.${exts[ei]}${cacheBust}`;
+      });
+    }
+
+    function findPrefix(){
+      return candidates.reduce((p, pre)=>p.catch(()=>probePrefix(pre)), Promise.reject());
+    }
+
+    function makeImg(src, alt){
+      const el = document.createElement('img');
+      el.src = src + cacheBust;
+      el.alt = alt;
+      return el;
+    }
+
+    findPrefix().then(prefix=>{
+      const track = document.getElementById('sliderTrack');
+      for (let i=1;i<=howMany;i++){
+        track.appendChild(makeImg(`${prefix}${i}.jpeg`, `Wheel ${i}`));
+      }
+      for (let i=1;i<=howMany;i++){
+        track.appendChild(makeImg(`${prefix}${i}.jpeg`, `Wheel ${i}`));
+      }
+    }).catch(()=>{
+      console.error('找不到 /images/ 路径，请检查目录/大小写。');
+    });
+  })();
 </script>
 
 </body>
