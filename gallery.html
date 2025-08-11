@@ -69,56 +69,13 @@
 <section class="gallery" id="gallery"></section>
 
 <script>
-  /**
-   * 自动加载 /images/ 下按数字命名的 .jpeg 图片
-   * 只需上传 34.jpeg、35.jpeg… 即会显示
-   */
-  (function () {
-    const pathPrefix = 'images/';   // 图片所在目录
-    const maxTry = 1000;            // 预留一个足够大的编号上限
-    const stopAfterMiss = 5;        // 连续找不到 N 个就停止（避免无尽请求）
-    const gallery = document.getElementById('gallery');
-
-    // 加个时间戳参数，避免浏览器缓存导致看不到新图
-    const bust = () => `?v=${Date.now()}`;
-
-    let miss = 0;
-    for (let i = 1; i <= maxTry; i++) {
-      const img = new Image();
-      // 仅支持 .jpeg（你现在的命名就是这样）
-      img.src = `${pathPrefix}${i}.jpeg${bust()}`;
-      img.alt = `Wheel ${i}`;
-      img.loading = 'lazy';
-      img.decoding = 'async';
-
-      img.onload = () => {
-        miss = 0;
-        // 去掉查询参数再展示（避免右键另存为带参数）
-        const clean = document.createElement('img');
-        clean.src = `${pathPrefix}${i}.jpeg${bust()}`;
-        clean.alt = img.alt;
-        clean.loading = 'lazy';
-        clean.decoding = 'async';
-        gallery.appendChild(clean);
-      };
-
-      img.onerror = () => {
-        miss++;
-        if (miss >= stopAfterMiss) {
-          // 连续找不到就停止继续往后检测
-          // 也就意味着当前最大编号已经到头
-          // console.log('No more images after', i - stopAfterMiss);
-          return; // 结束函数
-        }
-      };
-    }
-  })();
-
-  /**
-   * （可选）自动刷新页面，便于你后台刚上传完图片时，前台几分钟后自动更新展示。
-   * 需要的话把下一行的注释去掉；当前设置每 5 分钟刷新一次。
-   */
-  // setInterval(() => location.reload(true), 5 * 60 * 1000);
+<script>
+  const g = document.getElementById('gallery');
+  const img = document.createElement('img');
+  img.src = 'images/1.jpeg?test=' + Date.now();
+  img.alt = 'test';
+  g.appendChild(img);
+</script>
 </script>
 
 </body>
