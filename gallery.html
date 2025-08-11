@@ -69,13 +69,38 @@
 <section class="gallery" id="gallery"></section>
 
 <script>
-<script>
-  const g = document.getElementById('gallery');
-  const img = document.createElement('img');
-  img.src = 'images/1.jpeg?test=' + Date.now();
-  img.alt = 'test';
-  g.appendChild(img);
-</script>
+  // 计算 GitHub Pages 的仓库根路径： /<repo>
+  const parts = location.pathname.split('/').filter(Boolean);
+  const base = '/' + (parts.length ? parts[0] : ''); // e.g. /oof
+  const pathPrefix = `${base}/images/`;  // 绝对路径，不受页面所在目录影响
+  const maxTry = 1000;
+  const stopAfterMiss = 5;
+  const exts = ['jpeg','jpg','JPEG','JPG'];
+  const cacheBust = `?v=${Date.now()}`;
+  const gallery = document.getElementById('gallery');
+
+  function appendImg(url, alt){
+    const el = document.createElement('img');
+    el.src = url + cacheBust;
+    el.alt = alt;
+    el.loading = 'lazy';
+    el.decoding = 'async';
+    gallery.appendChild(el);
+  }
+
+  function tryOne(i, ei, miss, done){
+    if (ei >= exts.length) { done(false, miss+1); return; }
+    const baseUrl = `${pathPrefix}${i}.${exts[ei]}`;
+    const test = new Image();
+    test.onload  = () => { appendImg(baseUrl, `Wheel ${i}`); done(true, 0); };
+    test.onerror = () => { tryOne(i, ei+1, miss, done); };
+    test.src = baseUrl + cacheBust;
+  }
+
+  (function load(n=1, miss=0){
+    if (n > maxTry || miss >= stopAfterMiss) return;
+    tryOne(n, 0, miss, (ok, newMiss) => load(n+1, newMiss));
+  })();
 </script>
 
 </body>
