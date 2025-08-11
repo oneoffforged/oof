@@ -69,37 +69,73 @@
 <section class="gallery" id="gallery"></section>
 
 <script>
-  // 计算 GitHub Pages 的仓库根路径： /<repo>
-  const parts = location.pathname.split('/').filter(Boolean);
-  const base = '/' + (parts.length ? parts[0] : ''); // e.g. /oof
-  const pathPrefix = `${base}/images/`;  // 绝对路径，不受页面所在目录影响
-  const maxTry = 1000;
-  const stopAfterMiss = 5;
-  const exts = ['jpeg','jpg','JPEG','JPG'];
-  const cacheBust = `?v=${Date.now()}`;
-  const gallery = document.getElementById('gallery');
+  // 尝试找到可用的图片路径前缀
+  (function () {
+    const exts = ['jpeg','jpg','JPEG','JPG'];
+    const maxTry = 1000;
+    const stopAfterMiss = 5;
+    const cacheBust = `?v=${Date.now()}`;
+    const gallery = document.getElementById('gallery');
 
-  function appendImg(url, alt){
-    const el = document.createElement('img');
-    el.src = url + cacheBust;
-    el.alt = alt;
-    el.loading = 'lazy';
-    el.decoding = 'async';
-    gallery.appendChild(el);
-  }
+    // 构造候选前缀：相对路径、根路径、项目路径、带 origin 的绝对路径
+    const parts = location.pathname.split('/').filter(Boolean); // e.g. ["repo","gallery.html"] 或 ["gallery.html"]
+    const candidates = [
+      'images/',                             // 与当前页面同层的 images/
+      '/images/',                            // 站点根下的 /images/
+      '/' + (parts[0] || '') + '/images/',   // /repo/images/（项目页）
+      location.origin + '/images/',          // 绝对根路径
+      location.origin + '/' + (parts[0] || '') + '/images/' // 绝对项目路径
+    ];
 
-  function tryOne(i, ei, miss, done){
-    if (ei >= exts.length) { done(false, miss+1); return; }
-    const baseUrl = `${pathPrefix}${i}.${exts[ei]}`;
-    const test = new Image();
-    test.onload  = () => { appendImg(baseUrl, `Wheel ${i}`); done(true, 0); };
-    test.onerror = () => { tryOne(i, ei+1, miss, done); };
-    test.src = baseUrl + cacheBust;
-  }
+    // 试着加载 1.[ext] 来探测哪个前缀可用
+    function probePrefix(prefix, extIndex=0) {
+      return new Promise((resolve, reject) => {
+        if (extIndex >= exts.length) return reject();
+        const test = new Image();
+        test.onload = () => resolve(prefix);            // 找到可用前缀
+        test.onerror = () => resolve(probePrefix(prefix, extIndex+1)); // 换后缀再试
+        test.src = `${prefix}1.${exts[extIndex]}${cacheBust}`;
+      });
+    }
 
-  (function load(n=1, miss=0){
-    if (n > maxTry || miss >= stopAfterMiss) return;
-    tryOne(n, 0, miss, (ok, newMiss) => load(n+1, newMiss));
+    function findWorkingPrefix() {
+      // 依次顺序尝试候选（不用 race，避免跨域/缓存奇怪情况）
+      return candidates.reduce((p, prefix) => {
+        return p.catch(() => probePrefix(prefix));
+      }, Promise.reject());
+    }
+
+    function appendImg(url, alt) {
+      const el = document.createElement('img');
+      el.src = url + cacheBust;
+      el.alt = alt;
+      el.loading = 'lazy';
+      el.decoding = 'async';
+      gallery.appendChild(el);
+    }
+
+    function tryOne(prefix, i, ei, miss, done) {
+      if (ei >= exts.length) { done(false, miss+1); return; }
+      const base = `${prefix}${i}.${exts[ei]}`;
+      const img = new Image();
+      img.onload  = () => { appendImg(base, `Wheel ${i}`); done(true, 0); };
+      img.onerror = () => { tryOne(prefix, i, ei+1, miss, done); };
+      img.src = base + cacheBust;
+    }
+
+    function loadSeq(prefix, n=1, miss=0) {
+      if (n > maxTry || miss >= stopAfterMiss) return;
+      tryOne(prefix, n, 0, miss, (ok, newMiss) => loadSeq(prefix, n+1, newMiss));
+    }
+
+    findWorkingPrefix()
+      .then((prefix) => {
+        // console.log('Using prefix:', prefix);
+        loadSeq(prefix, 1, 0);
+      })
+      .catch(() => {
+        console.error('找不到可用的 images 路径。请检查 images 文件夹位置与大小写。');
+      });
   })();
 </script>
 
