@@ -21,22 +21,41 @@
       text-align: center;
     }
 
+    /* === 导航改为 flex，以便右上角放 Order Now === */
     nav {
       background: #222;
-      padding: 10px;
-      text-align: center;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      position: sticky; /* 贴顶，滚动时保持可见 */
+      top: 0;
+      z-index: 1000;
     }
 
     nav a {
       color: #fff;
       text-decoration: none;
-      margin: 0 15px;
       font-weight: bold;
     }
+
+    nav a + a { margin-left: 10px; }
 
     nav a:hover {
       text-decoration: underline;
     }
+
+    /* 右上角胶囊按钮 */
+    .cta-order {
+      margin-left: auto;               /* 推到最右侧 */
+      background: #e53935;             /* 显眼红 */
+      border: 1px solid #e53935;
+      padding: 10px 16px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 700;
+    }
+    .cta-order:hover { opacity: .9; text-decoration: none; }
 
     .slider-container {
       overflow: hidden;
@@ -85,13 +104,8 @@
       background: rgba(255, 255, 255, 0.4);
     }
 
-    .slider-button.left {
-      left: 10px;
-    }
-
-    .slider-button.right {
-      right: 10px;
-    }
+    .slider-button.left { left: 10px; }
+    .slider-button.right { right: 10px; }
 
     .tagline {
       font-size: 1.2em;
@@ -137,27 +151,17 @@
 
     /* Responsive styles for mobile devices */
     @media (max-width: 768px) {
-      header {
-        padding: 15px 5px;
-      }
+      header { padding: 15px 5px; }
+      .tagline { font-size: 1em; margin: 10px; }
 
-      .tagline {
-        font-size: 1em;
-        margin: 10px;
-      }
-
+      /* 手机端导航：自动换行并保持按钮在最右 */
       nav {
-        padding: 10px 5px;
-        display: flex;
         flex-wrap: wrap;
+        gap: 12px;
         justify-content: center;
       }
-
-      nav a {
-        display: inline-block;
-        margin: 5px 8px;
-        font-size: 0.9em;
-      }
+      nav a { font-size: 0.9em; }
+      .cta-order { margin-left: 0; order: 2; }
 
       .slider-track {
         animation: none;
@@ -173,27 +177,13 @@
         margin: 10px auto;
       }
 
-      .slider-button {
-        display: none;
-      }
+      .slider-button { display: none; }
 
-      .why-us {
-        margin: 20px 10px;
-        padding: 15px;
-      }
+      .why-us { margin: 20px 10px; padding: 15px; }
+      .why-us h2 { font-size: 1.3em; }
+      .why-us li { font-size: 1em; }
 
-      .why-us h2 {
-        font-size: 1.3em;
-      }
-
-      .why-us li {
-        font-size: 1em;
-      }
-
-      footer {
-        font-size: 0.9em;
-        padding: 15px 10px;
-      }
+      footer { font-size: 0.9em; padding: 15px 10px; }
     }
   </style>
 </head>
@@ -204,6 +194,7 @@
   <p class="tagline">Factory-direct custom forged wheels — built around your style, your fitment, your vision.</p>
 </header>
 
+<!-- === 导航：右上角新增 Order Now === -->
 <nav>
   <a href="index.html"><i class="fas fa-home"></i> Home</a>
   <a href="about.html"><i class="fas fa-industry"></i> About</a>
@@ -211,6 +202,9 @@
   <a href="gallery.html"><i class="fas fa-images"></i> Gallery</a>
   <a href="feedback.html"><i class="fas fa-comments"></i> Feedback</a>
   <a href="contact.html"><i class="fas fa-envelope"></i> Contact</a>
+
+  <!-- 右上角胶囊按钮 -->
+  <a class="cta-order" href="/order.html">Order Now</a>
 </nav>
 
 <section class="slider-container" id="slider">
