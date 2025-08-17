@@ -14,48 +14,44 @@
       color: #333;
     }
 
+    /* 顶部横幅 */
     header {
       background: #000;
       color: #fff;
       padding: 20px 10px;
       text-align: center;
+      position: relative; /* 用于定位悬浮按钮 */
     }
 
-    /* === 导航改为 flex，以便右上角放 Order Now === */
+    /* 悬浮的 Order Now 按钮（在 header 右上角） */
+    .order-fab {
+      position: absolute;
+      top: 14px;     /* 想更靠上可减小 */
+      right: 14px;   /* 想更靠右可减小 */
+      background: #e53935;
+      border: 1px solid #e53935;
+      color: #fff;
+      padding: 10px 16px;
+      border-radius: 999px;
+      font-weight: 700;
+      text-decoration: none;
+      z-index: 1001;
+    }
+    .order-fab:hover { opacity: .9; }
+
+    /* 导航：居中 */
     nav {
       background: #222;
-      padding: 10px 16px;
-      display: flex;
-      align-items: center;
-      gap: 18px;
-      position: sticky; /* 贴顶，滚动时保持可见 */
-      top: 0;
-      z-index: 1000;
+      padding: 10px;
+      text-align: center; /* 关键：居中 */
     }
-
     nav a {
       color: #fff;
       text-decoration: none;
+      margin: 0 15px;
       font-weight: bold;
     }
-
-    nav a + a { margin-left: 10px; }
-
-    nav a:hover {
-      text-decoration: underline;
-    }
-
-    /* 右上角胶囊按钮 */
-    .cta-order {
-      margin-left: auto;               /* 推到最右侧 */
-      background: #e53935;             /* 显眼红 */
-      border: 1px solid #e53935;
-      padding: 10px 16px;
-      border-radius: 999px;
-      text-decoration: none;
-      font-weight: 700;
-    }
-    .cta-order:hover { opacity: .9; text-decoration: none; }
+    nav a:hover { text-decoration: underline; }
 
     .slider-container {
       overflow: hidden;
@@ -63,13 +59,11 @@
       padding: 20px 0;
       position: relative;
     }
-
     .slider-track {
       display: flex;
       width: max-content;
       animation: scroll 40s linear infinite;
     }
-
     .slider-track img {
       height: 300px;
       margin-right: 20px;
@@ -77,15 +71,11 @@
       box-shadow: 0 0 10px rgba(0,0,0,0.5);
       flex-shrink: 0;
     }
-
     @keyframes scroll {
       0% { transform: translateX(0); }
       100% { transform: translateX(-50%); }
     }
-
-    .slider-container:hover .slider-track {
-      animation-play-state: paused;
-    }
+    .slider-container:hover .slider-track { animation-play-state: paused; }
 
     .slider-button {
       position: absolute;
@@ -99,11 +89,7 @@
       cursor: pointer;
       z-index: 10;
     }
-
-    .slider-button:hover {
-      background: rgba(255, 255, 255, 0.4);
-    }
-
+    .slider-button:hover { background: rgba(255, 255, 255, 0.4); }
     .slider-button.left { left: 10px; }
     .slider-button.right { right: 10px; }
 
@@ -121,21 +107,9 @@
       background: white;
       border-radius: 8px;
     }
-
-    .why-us h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    .why-us ul {
-      list-style: none;
-      padding: 0;
-    }
-
-    .why-us li {
-      margin: 10px 0;
-      font-size: 1.1em;
-    }
+    .why-us h2 { text-align: center; margin-bottom: 20px; }
+    .why-us ul { list-style: none; padding: 0; }
+    .why-us li { margin: 10px 0; font-size: 1.1em; }
 
     footer {
       background: #000;
@@ -143,25 +117,22 @@
       text-align: center;
       padding: 20px;
     }
+    footer a { color: #4da6ff; text-decoration: none; }
 
-    footer a {
-      color: #4da6ff;
-      text-decoration: none;
-    }
-
-    /* Responsive styles for mobile devices */
+    /* 移动端优化 */
     @media (max-width: 768px) {
       header { padding: 15px 5px; }
       .tagline { font-size: 1em; margin: 10px; }
 
-      /* 手机端导航：自动换行并保持按钮在最右 */
-      nav {
-        flex-wrap: wrap;
-        gap: 12px;
-        justify-content: center;
+      .order-fab {
+        top: 10px;
+        right: 10px;
+        padding: 8px 12px;
+        font-size: 0.9em;
       }
-      nav a { font-size: 0.9em; }
-      .cta-order { margin-left: 0; order: 2; }
+
+      nav { padding: 10px 5px; }
+      nav a { display: inline-block; margin: 5px 8px; font-size: 0.9em; }
 
       .slider-track {
         animation: none;
@@ -169,14 +140,12 @@
         scroll-behavior: smooth;
         width: auto;
       }
-
       .slider-track img {
         height: auto;
         width: 100%;
         max-width: 300px;
         margin: 10px auto;
       }
-
       .slider-button { display: none; }
 
       .why-us { margin: 20px 10px; padding: 15px; }
@@ -192,9 +161,10 @@
 <header>
   <h1>OneOffForged</h1>
   <p class="tagline">Factory-direct custom forged wheels — built around your style, your fitment, your vision.</p>
+  <!-- 悬浮的 Order Now 按钮（跳到订单页） -->
+  <a class="order-fab" href="/order.html">Order Now</a>
 </header>
 
-<!-- === 导航：右上角新增 Order Now === -->
 <nav>
   <a href="index.html"><i class="fas fa-home"></i> Home</a>
   <a href="about.html"><i class="fas fa-industry"></i> About</a>
@@ -202,9 +172,6 @@
   <a href="gallery.html"><i class="fas fa-images"></i> Gallery</a>
   <a href="feedback.html"><i class="fas fa-comments"></i> Feedback</a>
   <a href="contact.html"><i class="fas fa-envelope"></i> Contact</a>
-
-  <!-- 右上角胶囊按钮 -->
-  <a class="cta-order" href="/order.html">Order Now</a>
 </nav>
 
 <section class="slider-container" id="slider">
