@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Thank You - OneOffForged</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body{margin:0;display:flex;align-items:center;justify-content:center;min-height:100vh;background:#0b0b0b;color:#eee;font-family:-apple-system,system-ui,Segoe UI,Arial,sans-serif}
+    .card{background:#121212;border:1px solid #2a2a2a;border-radius:16px;padding:28px;max-width:680px;text-align:center}
+    h1{margin:0 0 8px 0}
+    p{margin:6px 0;color:#bbb}
+    a.btn{display:inline-block;margin-top:14px;padding:10px 16px;border-radius:999px;background:#e53935;color:#fff;text-decoration:none;font-weight:700}
+    a.btn:hover{opacity:.9}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Thank you! 🎉</h1>
+    <p>Your 50% deposit was received.</p>
+    <p>We’ll confirm specs and send the remaining balance + shipping invoice when your wheels are ready.</p>
+    <a class="btn" href="/index.html">Back to Home</a>
+    <p class="muted" id="countdown">Returning to home in 3 seconds…</p>
+  </div>
+
+  <script>
+    let left = 3;
+    const el = document.getElementById('countdown');
+    const timer = setInterval(()=>{
+      left--;
+      if(left<=0){ clearInterval(timer); window.location.href = "/index.html"; }
+      else { el.textContent = `Returning to home in ${left} seconds…`; }
+    }, 1000);
+  </script>
+</body>
+</html>
