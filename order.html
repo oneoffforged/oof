@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Place Your Order - OneOffForged</title>
+  <style>
+    body{font-family:system-ui,-apple-system,Segoe UI,Arial,sans-serif;margin:0;background:#0b0b0b;color:#eee}
+    header{padding:24px 16px;text-align:center}
+    .wrap{max-width:960px;margin:0 auto;padding:0 16px 60px}
+    .card{background:#121212;border:1px solid #2a2a2a;border-radius:12px;padding:20px;margin-top:12px}
+    h1{margin:0;font-size:28px}
+    h2{font-size:18px;margin:14px 0 8px}
+    label{display:block;font-size:14px;margin:10px 0 6px}
+    input,select,textarea{width:100%;padding:12px;border-radius:8px;border:1px solid #2a2a2a;background:#181818;color:#eee}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+    .muted{color:#aaa;font-size:13px}
+    .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px}
+    .btn{display:inline-block;padding:12px 18px;border-radius:999px;border:1px solid #444;background:#e41d1d;color:#fff;text-decoration:none;font-weight:600}
+    .btn.secondary{background:#222}
+    .total{font-size:22px;font-weight:700;margin-top:6px}
+    .coupon-row{display:grid;grid-template-columns:2fr 1fr;gap:10px}
+    @media (max-width:760px){.row,.row3,.coupon-row{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Place Your Order</h1>
+    <div class="muted">Custom forged wheels — made to order. Enter your sponsor code to save.</div>
+  </header>
+
+  <div class="wrap">
+    <form id="orderForm" class="card" onsubmit="return false;">
+      <h2>Contact</h2>
+      <div class="row">
+        <div>
+          <label>Name</label>
+          <input required name="name" />
+        </div>
+        <div>
+          <label>Email</label>
+          <input required type="email" name="email" />
+        </div>
+      </div>
+
+      <h2>Vehicle</h2>
+      <div class="row3">
+        <div><label>Make</label><input name="make" /></div>
+        <div><label>Year</label><input name="year" /></div>
+        <div><label>Model</label><input name="model" /></div>
+      </div>
+
+      <h2>Wheel Specs</h2>
+      <div class="row3">
+        <div>
+          <label>Size (inch)</label>
+          <select name="size">
+            <option>19</option><option>20</option><option>21</option><option>22</option><option>24</option><option>26</option><option>28</option>
+          </select>
+        </div>
+        <div><label>Width (J)</label><input name="width" placeholder="e.g. 10J" /></div>
+        <div><label>Offset (ET)</label><input name="offset" placeholder="e.g. +35" /></div>
+      </div>
+
+      <div class="row3">
+        <div><label>Bolt Pattern</label><input name="bp" placeholder="e.g. 5x114.3" /></div>
+        <div><label>Center Bore</label><input name="cb" placeholder="e.g. 70.5" /></div>
+        <div><label>Color/Finish</label><input name="color" placeholder="e.g. Brushed Clear" /></div>
+      </div>
+
+      <div class="row">
+        <div>
+          <label>Quantity (set)</label>
+          <select id="qty" name="qty"><option>1</option><option>2</option></select>
+        </div>
+        <div>
+          <label>Base Price (USD / set)</label>
+          <input id="basePrice" name="basePrice" type="number" step="0.01" placeholder="e.g. 2999" />
+          <div class="muted">用于计算；不会在页面显示给客户时可隐藏。</div>
+        </div>
+      </div>
+
+      <h2>Sponsor Coupon</h2>
+      <div class="coupon-row">
+        <input id="coupon" placeholder="Enter sponsor code (optional)" />
+        <a class="btn secondary" href="#" onclick="applyCoupon()">Apply</a>
+      </div>
+      <div id="couponNote" class="muted" style="margin-top:6px;"></div>
+
+      <h2>Order Total</h2>
+      <div class="total" id="total">$0.00</div>
+      <div class="muted" id="breakdown"></div>
+
+      <div class="actions">
+        <!-- TODO: 把下面这个链接换成你的 PayPal 结账链接 -->
+        <a id="payBtn" class="btn" href="#">Pay with PayPal</a>
+        <a class="btn secondary" href="index.html">Back to Home</a>
+      </div>
+    </form>
+
+    <div class="card">
+      <h2>Notes</h2>
+      <ul>
+        <li>All wheels are made-to-order. Lead time varies by finish and size.</li>
+        <li>Sponsor codes are single-use per order unless otherwise stated.</li>
+        <li>Shipping and taxes (if any) are confirmed after spec verification.</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    // ====== 你可以在这里维护 sponsor code 规则 ======
+    // 示例：固定减免 & 百分比折扣可并存（按需求改）
+    const couponRules = {
+      // 例：SPONSORAZUSA = 减 $100
+      "SPONSORAZUSA": { type: "amount", value: 100, note: "Azusa partner code: -$100" },
+      // 例：GTCLUB = 95 折
+      "GTCLUB": { type: "percent", value: 5, note: "Mustang club code: 5% off" }
+    };
+
+    function format(n){return n.toLocaleString(undefined,{style:'currency',currency:'USD'})}
+
+    function calcTotal(){
+      const base = parseFloat(document.getElementById('basePrice').value||0);
+      const qty  = parseInt(document.getElementById('qty').value||1,10);
+      const subtotal = base * qty;
+
+      const code = (document.getElementById('coupon').value||"").trim().toUpperCase();
+      const rule = couponRules[code];
+
+      let discount = 0, note = '';
+      if(rule){
+        if(rule.type === 'amount'){ discount = rule.value; }
+        if(rule.type === 'percent'){ discount = subtotal * (rule.value/100); }
+        note = rule.note || '';
+      }
+
+      const total = Math.max(subtotal - discount, 0);
+      document.getElementById('total').textContent = format(total);
+      document.getElementById('breakdown').textContent =
+        `Subtotal ${format(subtotal)} ${discount>0 ? `• Discount ${format(discount)}` : ''}`;
+      return { total, code };
+    }
+
+    function applyCoupon(){
+      const { total } = calcTotal();
+      const code = (document.getElementById('coupon').value||"").trim().toUpperCase();
+      const rule = couponRules[code];
+      const note = document.getElementById('couponNote');
+      note.textContent = rule ? (rule.note||'Coupon applied') : 'Invalid code';
+    }
+
+    // 绑定金额/数量变化
+    document.getElementById('basePrice').addEventListener('input', calcTotal);
+    document.getElementById('qty').addEventListener('change', calcTotal);
+    document.getElementById('coupon').addEventListener('input', calcTotal);
+    window.addEventListener('DOMContentLoaded', ()=>{
+      calcTotal();
+      // 设置 PayPal 跳转（示例使用 PayPal.me；你可改为 PayPal Checkout/Hosted Button）
+      const payBtn = document.getElementById('payBtn');
+      payBtn.addEventListener('click', ()=>{
+        const { total } = calcTotal();
+        if(total <= 0){ alert('Please set a valid base price.'); return; }
+        // TODO: 将 'YourPayPalMeName' 替换为你的 PayPal.me 名称；或改成你的 PayPal 按钮链接
+        const url = `https://www.paypal.me/YourPayPalMeName/${total.toFixed(2)}`;
+        window.location.href = url;
+      });
+    });
+  </script>
+</body>
+</html>
