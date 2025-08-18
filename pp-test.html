@@ -1,57 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
   <meta charset="UTF-8">
-  <title>PP Button Test</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    body{font-family:system-ui,Arial;margin:0;padding:24px;background:#111;color:#eee}
-    .card{max-width:560px;margin:0 auto;border:1px solid #2a2a2a;border-radius:12px;background:#181818;padding:16px}
-    #paypal-button-container{margin-top:12px;border:1px dashed #444;min-height:60px;display:flex;align-items:center;justify-content:center}
-    #status{white-space:pre-wrap;color:#ccc}
-    #pp-error{color:#ff6b6b;white-space:pre-wrap;margin-top:8px}
-  </style>
+  <title>PayPal Button Test</title>
 </head>
 <body>
-  <div class="card">
-    <h2>PayPal Button Test</h2>
-    <div id="status">Loading PayPal SDK…</div>
-
-    <!-- 仅 PayPal 按钮，强制英文 -->
-    <script src="https://www.paypal.com/sdk/js?client-id=AWDzLRYQprwHJ0mdDiCkfXeQq1PqqArW0Qpk0GUnvGC0Tk9oYFwkIzngIpnUccoIrHKtrYy-pDQInUMc&currency=USD&locale=en_US&components=buttons&intent=CAPTURE&commit=true&disable-funding=card,paylater,credit,venmo"></script>
-
-    <div id="paypal-button-container"></div>
-    <div id="pp-error"></div>
-  </div>
-
+  <div id="paypal-button-container"></div>
+  <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=USD"></script>
   <script>
-    const statusEl = document.getElementById('status');
-    const errEl = document.getElementById('pp-error');
-
-    function logStatus(msg){ statusEl.textContent = msg; }
-
-    // 1) SDK 是否存在
-    if (!window.paypal) {
-      logStatus('❌ PayPal SDK not found on window. Possible causes:\n- Script blocked by ad blocker / browser privacy settings\n- Mixed content / not using HTTPS\n- Network blocked to paypal.com\n\nTry Chrome Incognito with all extensions off.');
-    } else {
-      logStatus('✅ PayPal SDK loaded. Rendering button…');
-      try {
-        paypal.Buttons({
-          createOrder: (data, actions) => actions.order.create({
-            purchase_units: [{ amount: { value: '5.00' }, description: 'Test payment' }],
-            application_context: { shipping_preference: 'NO_SHIPPING' }
-          }),
-          onApprove: (data, actions) => actions.order.capture().then(() => alert('Test payment captured')),
-          onError: (err) => {
-            console.error(err);
-            errEl.textContent = 'PayPal returned an error: ' + (err?.message || String(err));
-          }
-        }).render('#paypal-button-container');
-      } catch (e) {
-        console.error(e);
-        errEl.textContent = 'Render threw an exception: ' + (e?.message || String(e));
-      }
-    }
+    paypal.Buttons().render('#paypal-button-container');
   </script>
 </body>
 </html>
