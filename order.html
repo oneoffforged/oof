@@ -106,8 +106,8 @@
     </div>
   </div>
 
-  <!-- PayPal JS SDK（精简参数，先确保稳） -->
-  <script src="https://www.paypal.com/sdk/js?client-id=AWDzLRYQprwHJ0mdDiCkfXeQq1PqqArW0Qpk0GUnvGC0Tk9oYFwkIzngIpnUccoIrHKtrYy-pDQInUMc&currency=USD&locale=en_US"></script>
+  <!-- PayPal JS SDK：开启卡支付，禁用 Pay Later / 信用额度 / Venmo；强制英文 + USD -->
+  <script src="https://www.paypal.com/sdk/js?client-id=AWDzLRYQprwHJ0mdDiCkfXeQq1PqqArW0Qpk0GUnvGC0Tk9oYFwkIzngIpnUccoIrHKtrYy-pDQInUMc&currency=USD&locale=en_US&components=buttons&intent=CAPTURE&commit=true&enable-funding=card&disable-funding=paylater,credit,venmo"></script>
 
   <script>
     // -------- 金额/优惠逻辑 --------
@@ -176,29 +176,52 @@
         })();
       });
     }
+
     function mountButtons(){
       const ppErr = document.getElementById('pp-error');
+
       paypal.Buttons({
+        // 不限定 fundingSource，这样 PayPal 会根据可用性展示 “PayPal” 和 “Debit or Credit Card”
         style:{layout:'vertical', color:'gold', shape:'rect', label:'paypal'},
-        onClick: () => validateForm() ? paypal.Actions.resolve() : paypal.Actions.reject(),
-        createOrder: (data, actions) => {
+
+        // ✅ 用 actions.resolve/reject
+        onClick: function (data, actions) {
+          if (!validateForm()) return actions.reject();
+          return actions.resolve();
+        },
+
+        createOrder: function (data, actions) {
           const dep = calc().deposit.toFixed(2);
-          if(!(parseFloat(dep)>=1)){ ppErr.textContent='Invalid deposit: '+dep; return paypal.Actions.reject(); }
+          if (!(parseFloat(dep) >= 1)) {
+            ppErr.textContent = 'Invalid deposit: ' + dep;
+            return actions.reject();
+          }
           return actions.order.create({
-            purchase_units: [{ amount:{ value: dep }, description: summaryText() }],
-            application_context:{ shipping_preference:'NO_SHIPPING' }
+            purchase_units: [{
+              amount: { value: dep },
+              description: summaryText()
+            }],
+            application_context: { shipping_preference: 'NO_SHIPPING' }
           });
         },
-        onApprove: (data, actions) =>
-          actions.order.capture().then(()=>{ window.location.href='/thank-you.html'; }),
-        onError: (err)=>{ console.error(err); ppErr.textContent='PayPal error: '+(err?.message||String(err)); alert('Payment error. Please try again or contact us.'); }
+
+        onApprove: function (data, actions) {
+          return actions.order.capture().then(function () {
+            window.location.href = '/thank-you.html';
+          });
+        },
+
+        onError: function (err) {
+          console.error(err);
+          ppErr.textContent = 'PayPal error: ' + (err && err.message ? err.message : String(err));
+          alert('Payment error. Please try again or contact us.');
+        }
       }).render('#paypal-button-container');
     }
 
-    // -------- 页面加载：先渲染汇总，再等待 SDK，最后挂载按钮 --------
     window.addEventListener('DOMContentLoaded', async ()=>{
       render();
-      try{ await waitForPaypal(); mountButtons(); }
+      try { await waitForPaypal(); mountButtons(); }
       catch(e){ console.error(e); document.getElementById('pp-error').textContent='❌ PayPal SDK not loaded in time. Try hard refresh (⌘⇧R), Chrome Incognito, disable ad-blockers.'; }
     });
   </script>
