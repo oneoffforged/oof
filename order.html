@@ -70,7 +70,7 @@
         <div>
           <label>Total Price (before discount) — USD <span class="danger">*</span></label>
           <input id="basePrice" type="number" step="0.01" placeholder="e.g. 3999" required />
-          <div class="muted">输入轮毂总价（整套）。系统会先减 $100（若有 sponsor code），再计算 50% 定金。</div>
+          <div class="muted">Enter full set price. We apply sponsor discount first, then calculate 50% deposit.</div>
         </div>
         <div>
           <label>Quantity (set)</label>
@@ -98,28 +98,31 @@
     <div class="card">
       <h2>Notes</h2>
       <ul>
-        <li>All wheels are made-to-order. Lead time depends on finish/size.</li>
-        <li>Sponsor codes are case-insensitive; invalid codes不会生效。</li>
+        <li>Lead time depends on style and finish.</li>
+        <li>Sponsor codes are case-insensitive; invalid codes will not apply.</li>
         <li>Shipping and taxes (if any) are billed with the remaining balance.</li>
       </ul>
     </div>
   </div>
 
-  <!-- PayPal JS SDK：已替换为你的 Live Client ID -->
-  <script src="https://www.paypal.com/sdk/js?client-id=AWDzLRYQprwHJ0mdDiCkfXeQq1PqqArW0Qpk0GUnvGC0Tk9oYFwkIzngIpnUccoIrHKtrYy-pDQInUMc&currency=USD"></script>
+  <!-- PayPal JS SDK
+       强制英文：locale=en_US
+       仅显示 PayPal：disable-funding=card,paylater,credit,venmo
+  -->
+  <script src="https://www.paypal.com/sdk/js?client-id=AWDzLRYQprwHJ0mdDiCkfXeQq1PqqArW0Qpk0GUnvGC0Tk9oYFwkIzngIpnUccoIrHKtrYy-pDQInUMc&currency=USD&locale=en_US&components=buttons&intent=CAPTURE&commit=true&disable-funding=card,paylater,credit,venmo"></script>
 
   <!-- 可选：EmailJS（前端直发邮件）。若不配置，将自动走 mailto 备用方案 -->
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
   <script>
-    // ===== 配置区：如使用 EmailJS，请填入你的 3 个 ID（否则留空使用 mailto 备用） =====
-    const EMAILJS_PUBLIC_KEY = "";     // 例如 "J5xxxxxxx_yyyyyy"
-    const EMAILJS_SERVICE_ID = "";     // 例如 "service_abc123"
-    const EMAILJS_TEMPLATE_ID = "";    // 例如 "template_xyz789"
-    const RECEIVER_EMAIL = "oneoffforged@gmail.com"; // 接收通知的邮箱
+    // ===== 如使用 EmailJS，请填入这 3 个 ID（否则留空使用 mailto 备用）=====
+    const EMAILJS_PUBLIC_KEY = "";     // e.g. "J5xxxxxxx_yyyyyy"
+    const EMAILJS_SERVICE_ID = "";     // e.g. "service_abc123"
+    const EMAILJS_TEMPLATE_ID = "";    // e.g. "template_xyz789"
+    const RECEIVER_EMAIL = "oneoffforged@gmail.com";
 
     if (EMAILJS_PUBLIC_KEY) { try{ emailjs.init(EMAILJS_PUBLIC_KEY); }catch(e){} }
 
-    // ==== Sponsor code 规则：正确 code 让“总价”立减 $100；定金=折后总价的一半 ====
+    // ==== Sponsor code：正确 code 让“总价”立减 $100；定金=折后总价的一半 ====
     const COUPON_MAP = {
       "SPONSOR100": { amountOff: 100, note: "Sponsor code applied: -$100" },
       "GTCLUB":     { amountOff: 100, note: "Mustang club: -$100" },
@@ -135,7 +138,7 @@
 
       const code = (document.getElementById('coupon').value || '').trim().toUpperCase();
       const rule = COUPON_MAP[code];
-      const discount = rule ? 100 : 0; // 按你的要求：填对 code 就减 $100
+      const discount = rule ? 100 : 0;
 
       const total = Math.max(subtotal - discount, 0);
       const deposit = total * 0.5;
@@ -156,14 +159,12 @@
 
     function applyCoupon(){ render(); }
 
-    // 输入变动时重算
     ['basePrice','qty','coupon'].forEach(id=>{
       document.getElementById(id).addEventListener('input', render);
       document.getElementById(id).addEventListener('change', render);
     });
     window.addEventListener('DOMContentLoaded', render);
 
-    // 简单校验
     function validateForm(){
       const err = document.getElementById('formError');
       err.textContent = '';
@@ -176,7 +177,6 @@
       return true;
     }
 
-    // 组装订单信息
     function collectOrderData(){
       const fields = ['make','year','model','size','width','offset','bp','cb','color'];
       const data = {};
@@ -197,11 +197,9 @@
       return { name, email, ...data, ...calc, summary };
     }
 
-    // 发送邮件：优先 EmailJS；否则 mailto 备用
     async function notifyByEmail(order){
       try{
         if (EMAILJS_PUBLIC_KEY && EMAILJS_SERVICE_ID && EMAILJS_TEMPLATE_ID && window.emailjs) {
-          // 你需要在 EmailJS 模板里配置这些字段变量
           await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
             to_email: RECEIVER_EMAIL,
             customer_name: order.name,
@@ -220,10 +218,8 @@
           return true;
         }
       }catch(e){
-        console.warn("EmailJS 发送失败，将尝试 mailto：", e);
+        console.warn("EmailJS send failed, fallback to mailto.", e);
       }
-
-      // mailto 备用方案（自动弹系统邮箱）
       const subject = encodeURIComponent("New Deposit Order - OneOffForged");
       const body = encodeURIComponent(order.summary);
       const mailto = `mailto:${RECEIVER_EMAIL}?subject=${subject}&body=${body}`;
@@ -231,14 +227,14 @@
       return false;
     }
 
-    // PayPal 按钮
     paypal.Buttons({
+      style: { layout: 'vertical', color: 'gold', shape: 'rect', label: 'paypal' },
+
       onClick: function(){
         if(!validateForm()) return paypal.Actions.reject();
         return paypal.Actions.resolve();
       },
 
-      // 创建订单：金额 = 定金
       createOrder: function(data, actions) {
         const calc = getCalc();
         return actions.order.create({
@@ -250,11 +246,10 @@
         });
       },
 
-      // 付款完成：发送邮件 → 跳到 thank-you 页面
       onApprove: function(data, actions) {
         return actions.order.capture().then(async function(details) {
           const order = collectOrderData();
-          await notifyByEmail(order); // 不论成功或 fallback 都继续
+          await notifyByEmail(order);
           window.location.href = "/thank-you.html";
         });
       },
