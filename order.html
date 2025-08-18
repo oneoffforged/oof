@@ -12,7 +12,7 @@
     h1{margin:0;font-size:28px}
     h2{font-size:18px;margin:14px 0 8px}
     label{display:block;font-size:14px;margin:10px 0 6px}
-    input,select,textarea{width:100%;padding:12px;border-radius:8px;border:1px solid #2a2a2a;background:#181818;color:#eee}
+    input,select{width:100%;padding:12px;border-radius:8px;border:1px solid #2a2a2a;background:#181818;color:#eee}
     .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
     .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
     .muted{color:#aaa;font-size:13px}
@@ -22,7 +22,7 @@
     .btn{display:inline-block;padding:10px 16px;border-radius:999px;border:1px solid #444;background:#222;color:#fff;text-decoration:none;font-weight:600}
     .btn:hover{opacity:.9}
     .danger{color:#ff6b6b}
-    #paypal-button-container{margin-top:18px}
+    #paypal-button-container{margin-top:18px;min-height:60px;display:flex;align-items:center;justify-content:center}
     #pp-error{color:#ff6b6b;margin-top:10px;white-space:pre-wrap}
     @media (max-width:760px){.row,.row3,.coupon-row{grid-template-columns:1fr}}
   </style>
@@ -30,7 +30,7 @@
 <body>
   <header>
     <h1>Place Your Order</h1>
-    <div class="muted">Custom forged wheels — pay a 50% deposit now. Sponsor code knocks $100 off the total.</div>
+    <div class="muted">Custom forged wheels — 50% deposit now. Sponsor code saves $100.</div>
   </header>
 
   <div class="wrap">
@@ -39,31 +39,31 @@
       <div class="row">
         <div>
           <label>Name <span class="danger">*</span></label>
-          <input required name="name" id="name" />
+          <input required id="name" />
         </div>
         <div>
           <label>Email <span class="danger">*</span></label>
-          <input required type="email" name="email" id="email" />
+          <input required type="email" id="email" />
         </div>
       </div>
 
       <h2>Vehicle (optional)</h2>
       <div class="row3">
-        <div><label>Make</label><input name="make" id="make"/></div>
-        <div><label>Year</label><input name="year" id="year"/></div>
-        <div><label>Model</label><input name="model" id="model"/></div>
+        <div><label>Make</label><input id="make"/></div>
+        <div><label>Year</label><input id="year"/></div>
+        <div><label>Model</label><input id="model"/></div>
       </div>
 
       <h2>Wheel Specs (optional)</h2>
       <div class="row3">
-        <div><label>Size (inch)</label><input name="size" id="size" placeholder="e.g. 20"/></div>
-        <div><label>Width (J)</label><input name="width" id="width" placeholder="e.g. 10J"/></div>
-        <div><label>Offset (ET)</label><input name="offset" id="offset" placeholder="e.g. +35"/></div>
+        <div><label>Size (inch)</label><input id="size" placeholder="e.g. 20"/></div>
+        <div><label>Width (J)</label><input id="width" placeholder="e.g. 10J"/></div>
+        <div><label>Offset (ET)</label><input id="offset" placeholder="e.g. +35"/></div>
       </div>
       <div class="row3">
-        <div><label>Bolt Pattern</label><input name="bp" id="bp" placeholder="e.g. 5x114.3"/></div>
-        <div><label>Center Bore</label><input name="cb" id="cb" placeholder="e.g. 70.5"/></div>
-        <div><label>Color/Finish</label><input name="color" id="color" placeholder="e.g. Brushed Clear"/></div>
+        <div><label>Bolt Pattern</label><input id="bp" placeholder="e.g. 5x114.3"/></div>
+        <div><label>Center Bore</label><input id="cb" placeholder="e.g. 70.5"/></div>
+        <div><label>Color/Finish</label><input id="color" placeholder="e.g. Brushed Clear"/></div>
       </div>
 
       <h2>Price & Sponsor Code</h2>
@@ -91,7 +91,6 @@
       <div class="muted">Remaining 50% + shipping will be invoiced when the wheels are ready.</div>
 
       <div id="formError" class="danger" style="margin-top:10px;"></div>
-      <!-- PayPal 错误可视化区域 -->
       <div id="pp-error"></div>
 
       <div id="paypal-button-container"></div>
@@ -101,51 +100,40 @@
       <h2>Notes</h2>
       <ul>
         <li>Lead time depends on style and finish.</li>
-        <li>Sponsor codes are case-insensitive; invalid codes will not apply.</li>
+        <li>Sponsor codes are case-insensitive; valid code saves $100.</li>
         <li>Shipping and taxes (if any) are billed with the remaining balance.</li>
       </ul>
     </div>
   </div>
 
-  <!-- PayPal JS SDK: 强制英文 + 仅 PayPal 按钮 -->
+  <!-- PayPal JS SDK：你的 Live Client ID；仅显示 PayPal；强制英文 -->
   <script src="https://www.paypal.com/sdk/js?client-id=AWDzLRYQprwHJ0mdDiCkfXeQq1PqqArW0Qpk0GUnvGC0Tk9oYFwkIzngIpnUccoIrHKtrYy-pDQInUMc&currency=USD&locale=en_US&components=buttons&intent=CAPTURE&commit=true&disable-funding=card,paylater,credit,venmo"></script>
 
-  <!-- 可选：EmailJS（不配置则走 mailto 备用） -->
-  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
   <script>
-    const EMAILJS_PUBLIC_KEY = "";
-    const EMAILJS_SERVICE_ID = "";
-    const EMAILJS_TEMPLATE_ID = "";
-    const RECEIVER_EMAIL = "oneoffforged@gmail.com";
-    if (EMAILJS_PUBLIC_KEY) { try{ emailjs.init(EMAILJS_PUBLIC_KEY); }catch(e){} }
+    // 可用 sponsor code（任意一个命中即减 $100）
+    const COUPON_SET = new Set(["SPONSOR100","GTCLUB","AZUSA"]);
 
-    const COUPON_MAP = { "SPONSOR100":{amountOff:100,note:"Sponsor code applied: -$100"},
-                         "GTCLUB":{amountOff:100,note:"Mustang club: -$100"},
-                         "AZUSA":{amountOff:100,note:"Partner code: -$100"} };
+    function usd(n){return n.toLocaleString(undefined,{style:'currency',currency:'USD'})}
 
-    function formatUSD(n){return n.toLocaleString(undefined,{style:'currency',currency:'USD'})}
-
-    function getCalc(){
-      const qty = parseInt(document.getElementById('qty').value || '1', 10);
-      const base = parseFloat(document.getElementById('basePrice').value || '0');
-      const subtotal = base * qty;
-      const code = (document.getElementById('coupon').value || '').trim().toUpperCase();
-      const rule = COUPON_MAP[code];
-      const discount = rule ? 100 : 0;
+    function calc(){
+      const qty = parseInt(document.getElementById('qty').value||'1',10);
+      const base = parseFloat(document.getElementById('basePrice').value||'0');
+      const subtotal = base*qty;
+      const code = (document.getElementById('coupon').value||'').trim().toUpperCase();
+      const discount = COUPON_SET.has(code) ? 100 : 0;
       const total = Math.max(subtotal - discount, 0);
       const deposit = total * 0.5;
-      return { qty, base, subtotal, discount, total, deposit, code, rule };
+      return {qty, base, subtotal, discount, total, deposit, code, validCode: COUPON_SET.has(code)};
     }
 
     function render(){
-      const { subtotal, discount, total, deposit, rule } = getCalc();
-      document.getElementById('total').textContent = formatUSD(total);
-      document.getElementById('deposit').textContent = formatUSD(deposit);
+      const {subtotal, discount, total, deposit, validCode} = calc();
+      document.getElementById('total').textContent = usd(total);
+      document.getElementById('deposit').textContent = usd(deposit);
       document.getElementById('breakdown').textContent =
-        `Subtotal ${formatUSD(subtotal)}${discount>0?` • Discount ${formatUSD(discount)}`:''}`;
-      const note = document.getElementById('couponNote');
-      const codeInput = document.getElementById('coupon').value.trim();
-      note.textContent = (codeInput && !rule) ? 'Invalid code' : (rule ? rule.note : '');
+        `Subtotal ${usd(subtotal)}${discount>0?` • Discount ${usd(discount)}`:''}`;
+      document.getElementById('couponNote').textContent =
+        (document.getElementById('coupon').value.trim() ? (validCode ? 'Code applied: -$100' : 'Invalid code') : '');
     }
     function applyCoupon(){ render(); }
     ['basePrice','qty','coupon'].forEach(id=>{
@@ -156,100 +144,56 @@
 
     function validateForm(){
       const err = document.getElementById('formError');
-      const ppErr = document.getElementById('pp-error');
-      err.textContent = ''; ppErr.textContent = '';
+      err.textContent = '';
       const name = document.getElementById('name').value.trim();
       const email = document.getElementById('email').value.trim();
-      const base = parseFloat(document.getElementById('basePrice').value || '0');
-      const calc = getCalc();
+      const base = parseFloat(document.getElementById('basePrice').value||'0');
+      const {deposit} = calc();
       if(!name || !email){ err.textContent = 'Please fill in name and email.'; return false; }
-      if(!(base > 0)){ err.textContent = 'Please enter a valid total price before discount.'; return false; }
-      if(calc.deposit < 1){ err.textContent = 'Deposit must be at least $1.00.'; return false; }
+      if(!(base>0)){ err.textContent = 'Please enter a valid total price before discount.'; return false; }
+      if(deposit < 1){ err.textContent = 'Deposit must be at least $1.00.'; return false; }
       return true;
     }
 
-    function collectOrderData(){
+    function summaryText(){
       const fields = ['make','year','model','size','width','offset','bp','cb','color'];
-      const data = {}; fields.forEach(f=>data[f]=document.getElementById(f).value.trim());
-      const name = document.getElementById('name').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const calc = getCalc();
-      const summary = [
-        `Customer: ${name} <${email}>`,
-        `Vehicle: ${data.year||''} ${data.make||''} ${data.model||''}`.replace(/\s+/g,' ').trim(),
-        `Specs: Size ${data.size||''}, Width ${data.width||''}, ET ${data.offset||''}, BP ${data.bp||''}, CB ${data.cb||''}, Color ${data.color||''}`,
-        `Qty: ${calc.qty}`,
-        `Subtotal: ${formatUSD(calc.subtotal)}`,
-        `Discount: ${formatUSD(calc.discount)} (code: ${calc.code||'none'})`,
-        `Total: ${formatUSD(calc.total)}`,
-        `Deposit (50%): ${formatUSD(calc.deposit)}`
+      const val = id => (document.getElementById(id).value||'').trim();
+      const s = calc();
+      return [
+        `Customer: ${val('name')} <${val('email')}>`,
+        `Vehicle: ${val('year')} ${val('make')} ${val('model')}`.replace(/\s+/g,' ').trim(),
+        `Specs: Size ${val('size')}, Width ${val('width')}, ET ${val('offset')}, BP ${val('bp')}, CB ${val('cb')}, Color ${val('color')}`,
+        `Qty: ${s.qty}`,
+        `Subtotal: ${usd(s.subtotal)}`,
+        `Discount: ${usd(s.discount)} (code: ${s.code||'none'})`,
+        `Total: ${usd(s.total)}`,
+        `Deposit (50%): ${usd(s.deposit)}`
       ].join(' | ');
-      return { name, email, ...data, ...calc, summary };
     }
 
-    async function notifyByEmail(order){
-      try{
-        if (EMAILJS_PUBLIC_KEY && EMAILJS_SERVICE_ID && EMAILJS_TEMPLATE_ID && window.emailjs) {
-          await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-            to_email: RECEIVER_EMAIL,
-            customer_name: order.name,
-            customer_email: order.email,
-            make: order.make, year: order.year, model: order.model,
-            size: order.size, width: order.width, offset: order.offset,
-            bp: order.bp, cb: order.cb, color: order.color,
-            qty: order.qty,
-            subtotal: order.subtotal.toFixed(2),
-            discount: order.discount.toFixed(2),
-            total: order.total.toFixed(2),
-            deposit: order.deposit.toFixed(2),
-            coupon_code: order.code || 'none',
-            summary: order.summary
+    // 渲染 PayPal 按钮
+    (function init(){
+      const ppErr = document.getElementById('pp-error');
+      if(!window.paypal){
+        ppErr.textContent = '❌ PayPal SDK not loaded. Try Chrome Incognito, disable ad-blockers, ensure HTTPS.';
+        return;
+      }
+      paypal.Buttons({
+        style:{layout:'vertical', color:'gold', shape:'rect', label:'paypal'},
+        onClick: () => validateForm() ? paypal.Actions.resolve() : paypal.Actions.reject(),
+        createOrder: (data, actions) => {
+          const dep = calc().deposit.toFixed(2);
+          if(!(parseFloat(dep)>=1)){ ppErr.textContent='Invalid deposit: '+dep; return paypal.Actions.reject(); }
+          return actions.order.create({
+            purchase_units: [{ amount:{ value: dep }, description: summaryText() }],
+            application_context:{ shipping_preference:'NO_SHIPPING' }
           });
-          return true;
-        }
-      }catch(e){
-        console.warn("EmailJS send failed, fallback to mailto.", e);
-      }
-      const subject = encodeURIComponent("New Deposit Order - OneOffForged");
-      const body = encodeURIComponent(order.summary);
-      window.location.href = `mailto:${RECEIVER_EMAIL}?subject=${subject}&body=${body}`;
-      return false;
-    }
-
-    paypal.Buttons({
-      style: { layout: 'vertical', color: 'gold', shape: 'rect', label: 'paypal' },
-
-      onClick: function(){
-        if(!validateForm()) return paypal.Actions.reject();
-        return paypal.Actions.resolve();
-      },
-
-      createOrder: function(data, actions) {
-        const calc = getCalc();
-        return actions.order.create({
-          purchase_units: [{
-            amount: { value: calc.deposit.toFixed(2) },
-            description: collectOrderData().summary
-          }],
-          application_context: { shipping_preference: 'NO_SHIPPING' }
-        });
-      },
-
-      onApprove: function(data, actions) {
-        return actions.order.capture().then(async function(details) {
-          const order = collectOrderData();
-          await notifyByEmail(order);
-          window.location.href = "/thank-you.html";
-        });
-      },
-
-      onError: function(err){
-        console.error(err);
-        const box = document.getElementById('pp-error');
-        box.textContent = 'PayPal returned an error: ' + (err && err.message ? err.message : String(err));
-        alert('Payment error. Please try again or contact us.');
-      }
-    }).render('#paypal-button-container');
-  <script src="https://www.paypal.com/sdk/js?client-id=AWDzLRYQprwHJ0mdDiCkfXeQq1PqqArW0Qpk0GUnvGC0Tk9oYFwkIzngIpnUccoIrHKtrYy-pDQInUMc&currency=USD&locale=en_US&components=buttons&intent=CAPTURE&commit=true&disable-funding=card,paylater,credit,venmo"></script>
+        },
+        onApprove: (data, actions) =>
+          actions.order.capture().then(()=>{ window.location.href = '/thank-you.html'; }),
+        onError: (err) => { console.error(err); ppErr.textContent = 'PayPal error: ' + (err?.message||String(err)); alert('Payment error. Please try again or contact us.'); }
+      }).render('#paypal-button-container');
+    })();
+  </script>
 </body>
 </html>
