@@ -80,7 +80,7 @@
 
       <div class="coupon-row" style="margin-top:8px;">
         <input id="coupon" placeholder="Enter sponsor code (optional)" />
-        <a class="btn" href="#" onclick="applyCoupon()">Apply</a>
+        <a class="btn" href=" " onclick="applyCoupon()">Apply</a >
       </div>
       <div id="couponNote" class="muted" style="margin-top:6px;"></div>
 
@@ -106,15 +106,16 @@
     </div>
   </div>
 
-  <!-- PayPal JS SDK（保持默认能力：PayPal/Pay Later/卡，视账户可用性自动展示） -->
+  <!-- PayPal JS SDK（默认展示 PayPal / Pay Later / 卡，视可用性） -->
   <script src="https://www.paypal.com/sdk/js?client-id=AWDzLRYQprwHJ0mdDiCkfXeQq1PqqArW0Qpk0GUnvGC0Tk9oYFwkIzngIpnUccoIrHKtrYy-pDQInUMc&currency=USD"></script>
 
-  <!-- EmailJS SDK（用你的公钥/服务/模板） -->
+  <!-- EmailJS SDK -->
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
   <script>
+    // ====== EmailJS 初始化（你的公钥）======
     (function(){ try{ emailjs.init("6jwlR92OsghT_l7QC"); }catch(e){ console.warn(e); } })();
 
-    // ===== Promo code 逻辑：仅支持这两个；命中立减100 =====
+    // ====== Promo code 配置：两个可用 code，命中立减 $100，且对应通知人 ======
     const COUPON_MAP = {
       "SOCALSHELBY": { amountOff: 100, notify: ["Socalshelbys2018@gmail.com", "baydarorkun2003@yahoo.com"] },
       "V8FOREVER":   { amountOff: 100, notify: ["baydarorkun2003@yahoo.com"] }
@@ -180,7 +181,27 @@
       ].join(' | ');
     }
 
-    // ===== 付款成功后，按 code 通知对应邮箱（使用你的一套 EmailJS 模板） =====
+    // ====== 1) 新增函数：无论是否使用 code，都发一封到老板邮箱（含 {{order_summary}}）======
+    const OWNER_EMAIL = "oneoffforged@gmail.com"; // 你的邮箱
+    function notifyOwnerAlways(){
+      try{
+        const orderSummary = summaryText();
+        const codeUpper = calc().code || ""; // 未使用 code 则为空字符串
+        return emailjs.send("service_vs35vuk", "template_0w8kko5", {
+          email: OWNER_EMAIL,          // 模板里的 {{email}} → 你的邮箱
+          code:  codeUpper,            // 模板里的 {{code}}
+          order_summary: orderSummary  // 模板里的 {{order_summary}}
+        }).then(res=>{
+          console.log("Owner notice sent", res.status);
+        }).catch(err=>{
+          console.warn("Owner notice failed", err);
+        });
+      }catch(e){
+        console.warn("notifyOwnerAlways error", e);
+      }
+    }
+
+    // ====== 赞助人通知（不包含 order_summary，只告知 code 被使用）======
     function sendSponsorEmailsByCode(codeUpper){
       const entry = COUPON_MAP[codeUpper];
       if (!entry) return; // 没用可用的 sponsor code 则不发
@@ -188,6 +209,7 @@
         emailjs.send("service_vs35vuk", "template_0w8kko5", {
           email: emailAddr,   // 模板里的 {{email}}
           code:  codeUpper    // 模板里的 {{code}}
+          // 不传 order_summary，赞助人不会看到详情
         }).then(function(res){
           console.log("Sponsor email sent to", emailAddr, res.status);
         }).catch(function(err){
@@ -196,7 +218,7 @@
       });
     }
 
-    // ===== PayPal Buttons =====
+    // ====== PayPal Buttons ======
     function waitForPaypal(maxMs=8000, step=200){
       return new Promise((resolve,reject)=>{
         const start=Date.now();
@@ -235,9 +257,10 @@
 
         onApprove: function(data, actions){
           return actions.order.capture().then(function(){
-            // 成功付款后：发送 sponsor 通知，然后跳转
+            // ====== 2) 付款成功：先通知赞助人，再给老板发详情，然后跳转 ======
             const usedCode = calc().code; // 已经标准化为大写
             try { sendSponsorEmailsByCode(usedCode); } catch(e){}
+            try { notifyOwnerAlways(); } catch(e){}
             window.location.href = '/thank-you.html';
           });
         },
