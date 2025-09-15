@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>OneOffForged</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- 手机端适配核心 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     body {
@@ -14,10 +14,10 @@
       color: #333;
     }
 
-    /* 顶部横幅：直接使用背景图 + 遮罩 + 中心排版 */
+    /* 顶部横幅：背景图 + 遮罩 */
     header {
       position: relative;
-      min-height: 60vh;                   /* 首屏高度可调 */
+      min-height: 60vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -25,14 +25,15 @@
       padding: 48px 20px 64px;
       color: #fff;
       text-align: center;
-      background: url('images/hero.jpg') center/cover no-repeat; /* 你的 hero 图 */
+      background: url('images/hero.jpg') center/cover no-repeat;
     }
-    /* 暗化遮罩，保证文字可读 */
     header::before {
       content: "";
       position: absolute;
       inset: 0;
       background: linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.55));
+      z-index: 0;
+      pointer-events: none; /* ✅ 避免遮罩挡点击 */
     }
     header * { position: relative; z-index: 1; }
 
@@ -42,7 +43,6 @@
       letter-spacing: 0.5px;
     }
 
-    /* 品牌宣言（用你的文案，适当精简为两段） */
     .hero-copy {
       max-width: 920px;
       line-height: 1.7;
@@ -55,7 +55,7 @@
     }
     .hero-copy p { margin: 8px 0; }
 
-    /* 悬浮的 Order Now 按钮（右上角） */
+    /* 悬浮的 Order Now 按钮 */
     .order-fab {
       position: absolute;
       top: 14px;
@@ -67,11 +67,10 @@
       border-radius: 999px;
       font-weight: 700;
       text-decoration: none;
-      z-index: 2;
     }
     .order-fab:hover { opacity: .9; }
 
-    /* 导航：居中 */
+    /* 导航 */
     nav {
       background: #222;
       padding: 10px;
@@ -171,26 +170,22 @@
 <body>
 
 <header>
-  <!-- 右上角首要行动按钮 -->
-  <a class="order-fab" href=" ">Order Now</a >
-
+  <a class="order-fab" href="order.html">Order Now</a> <!-- ✅ 用相对路径 -->
   <h1>OneOffForged</h1>
-
-  <!-- 你的品牌文案（适度精简） -->
   <div class="hero-copy">
     <h2>Your Design. Your Drive.</h2>
-    <p>Unleash your vision on the road with our fully customizable 6061-T6 forged wheels. You call the shots—send your specifications, sketches, or bold ideas, and we’ll engineer a set of wheels that’s uniquely yours.</p >
-    <p>Crafted from aerospace-grade aluminum and forged with precision, each wheel reflects your individuality and performance demands. With ONEOFF FORGED, you’re not just driving—you’re making a statement.</p >
+    <p>Unleash your vision on the road with our fully customizable 6061-T6 forged wheels. You call the shots—send your specifications, sketches, or bold ideas, and we’ll engineer a set of wheels that’s uniquely yours.</p>
+    <p>Crafted from aerospace-grade aluminum and forged with precision, each wheel reflects your individuality and performance demands. With ONEOFF FORGED, you’re not just driving—you’re making a statement.</p>
   </div>
 </header>
 
 <nav>
-  <a href="index.html"><i class="fas fa-home"></i> Home</a >
-  <a href="about.html"><i class="fas fa-industry"></i> About</a >
-  <a href="faq.html"><i class="fas fa-question-circle"></i> FAQ</a >
-  <a href="gallery.html"><i class="fas fa-images"></i> Gallery</a >
-  <a href="feedback.html"><i class="fas fa-comments"></i> Feedback</a >
-  <a href="contact.html"><i class="fas fa-envelope"></i> Contact</a >
+  <a href="index.html"><i class="fas fa-home"></i> Home</a>
+  <a href="about.html"><i class="fas fa-industry"></i> About</a>
+  <a href="faq.html"><i class="fas fa-question-circle"></i> FAQ</a>
+  <a href="gallery.html"><i class="fas fa-images"></i> Gallery</a>
+  <a href="feedback.html"><i class="fas fa-comments"></i> Feedback</a>
+  <a href="contact.html"><i class="fas fa-envelope"></i> Contact</a>
 </nav>
 
 <section class="slider-container" id="slider">
@@ -211,10 +206,10 @@
 </section>
 
 <footer>
-  <p>📩 For inquiries, feel free to email or DM us:</p >
-  <p>Email: <a href="mailto:oneoffforged@gmail.com">oneoffforged@gmail.com</a ></p >
-  <p>Instagram: <a href="https://instagram.com/oneoffforged">@oneoffforged</a ></p >
-  <p>TikTok: <a href="https://tiktok.com/@oneoffforged">@oneoffforged</a ></p >
+  <p>📩 For inquiries, feel free to email or DM us:</p>
+  <p>Email: <a href="mailto:oneoffforged@gmail.com">oneoffforged@gmail.com</a></p>
+  <p>Instagram: <a href="https://instagram.com/oneoffforged">@oneoffforged</a></p>
+  <p>TikTok: <a href="https://tiktok.com/@oneoffforged">@oneoffforged</a></p>
 </footer>
 
 <script>
@@ -223,10 +218,9 @@
     track.scrollBy({ left: direction * 320, behavior: 'smooth' });
   }
 
-  // 自动加载 /images 下的轮播图（按 1.jpeg, 2.jpeg ...）
   (function(){
     const exts = ['jpeg','jpg','JPEG','JPG'];
-    const howMany = 10; // 轮播里展示多少张
+    const howMany = 10;
     const cacheBust = `?v=${Date.now()}`;
 
     const parts = location.pathname.split('/').filter(Boolean);
